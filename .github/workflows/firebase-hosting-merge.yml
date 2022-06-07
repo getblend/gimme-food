@@ -30,9 +30,9 @@ jobs:
           touch .env
           echo ${{ secrets.DOTENV_CONFIG }} >> .env
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}"
-          channelId: live
-          projectId: gimmefood-d4740
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}
