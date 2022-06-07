@@ -23,9 +23,5 @@ jobs:
           echo ${{ secrets.DOTENV_CONFIG }} >> .env
 
       - name: deploy to production
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}"
-          channelId: live
-          projectId: gimmefood-d4740
+        run: |
+          yarn deploy --token "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4n740 }}" --non-interactive
