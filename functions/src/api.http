@@ -1,1 +1,1 @@
-GET http://localhost:5001/gimmefood-d4740/us-central1/api
+GET http://localhost:5001/gimmefood-d4740/us-central1/food
