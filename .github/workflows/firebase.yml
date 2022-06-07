@@ -21,8 +21,9 @@ jobs:
           echo ${{ secrets.DOTENV_CONFIG }} >> .env
           
       - name: deploy to production
-        uses: w9jds/firebase-action@v2
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy --only functions
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}'
+          channelId: live
+          projectId: gimmefood-d4740
