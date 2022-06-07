@@ -424,6 +424,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^8.5.8":
+  version: 8.5.8
+  resolution: "@types/jsonwebtoken@npm:8.5.8"
+  dependencies:
+    "@types/node": "*"
+  checksum: 56738a918c543dba30786066959f801212e7fb5cd4ec53cf7b8d227711ed358834feb9e5141f7f88ec7c642bb39757330a5a8917e3b22e0ff9084940d35f0d70
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.104":
   version: 4.14.182
   resolution: "@types/lodash@npm:4.14.182"
@@ -446,9 +455,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0":
-  version: 17.0.40
-  resolution: "@types/node@npm:17.0.40"
-  checksum: e3b2fe876672fbe4be84ce17773944eb2f5eaba50e2c6c0536bdf6d4972ed6488581580581f154183fdc8f2d56fa42a42e3d6e83b9b71ee25adea16a84765e92
+  version: 17.0.41
+  resolution: "@types/node@npm:17.0.41"
+  checksum: ddaf9e7decb487850a9bbfeb670b41c9d35c5b1597c4c4f889419b65042d776e9041ed533c7afc1bac30cad1e9dcfd984085b4a35312efe8ea5eaf0bd36a8191
   languageName: node
   linkType: hard
 
@@ -2370,15 +2379,16 @@ __metadata:
   linkType: hard
 
 "jwks-rsa@npm:^2.0.2":
-  version: 2.1.3
-  resolution: "jwks-rsa@npm:2.1.3"
+  version: 2.1.4
+  resolution: "jwks-rsa@npm:2.1.4"
   dependencies:
     "@types/express": ^4.17.13
+    "@types/jsonwebtoken": ^8.5.8
     debug: ^4.3.4
     jose: ^2.0.5
     limiter: ^1.1.5
     lru-memoizer: ^2.1.4
-  checksum: 8ae7dc74b24c33505a6a4251f274f912abb2d98796cfb28f877f54de582a26588e3716230ce926b29667af71d913e9cfc707842060a1371e56c786687903491e
+  checksum: 20de148da46e1dfafeb9068b733d69dbc0bed4e44104bbf4adf991de6a325010eaa1a32487bd2c97931d96da12faeaf3b9f8fbbec9a0ddfcd487f82f719fd438
   languageName: node
   linkType: hard
 

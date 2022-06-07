@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: install dependencies
         run: |
           cd functions/
-          yarn install --frozen-lockfile          
-    
+          yarn install --immutable
+
       - name: create env file
         run: |
           cd functions/
           touch .env
           echo ${{ secrets.DOTENV_CONFIG }} >> .env
-          
+
       - name: deploy to production
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}'
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}"
           channelId: live
           projectId: gimmefood-d4740
