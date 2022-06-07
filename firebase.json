@@ -6,18 +6,19 @@
     ],
     "source": "functions"
   },
-  "storage": {
-    "rules": "storage.rules"
-  },
   "emulators": {
     "functions": {
       "port": 5001
     },
-    "storage": {
+    "firestore": {
       "port": 9199
     },
     "ui": {
       "enabled": true
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }
