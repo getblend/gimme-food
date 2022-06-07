@@ -24,4 +24,5 @@ jobs:
 
       - name: deploy to production
         run: |
-          yarn deploy --token "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4n740 }}" --non-interactive
+          cd functions/
+          yarn deploy --token "${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4n740 }}" --non-interactive --security-level=secure-always
