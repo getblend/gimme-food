@@ -1,5 +1,1 @@
-node_modules/
-lib/
-typings/
-*.log
-.env
+!functions/.gitignore

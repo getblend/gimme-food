@@ -1,16 +1,22 @@
+import * as dotenv from "dotenv";
+import * as express from "express";
 import * as functions from "firebase-functions";
-import axios from "axios";
+import { createPosts } from "./models/post";
+import { downloadPosts } from "./models/unsplash";
+import routes from "./routes";
 
-export const api = functions.https.onRequest(async (request, response) => {
-  switch (request.method) {
-    case "GET":
-      const result = await axios.get(
-        "https://jsonplaceholder.typicode.com/todos/1"
-      );
-      response.send(result.data);
-      break;
+dotenv.config({ debug: true });
 
-    default:
-      throw new Error("Invalid request method");
-  }
-});
+const server = express();
+server.use("/", routes);
+
+export const api = functions.https.onRequest(server);
+
+export const scheduledDownload = functions.pubsub
+  .schedule("0 0 * * *")
+  .onRun(async () => {
+    functions.logger.info("Downloading latest from Unsplash");
+    const posts = await downloadPosts(50);
+    await createPosts(posts);
+    functions.logger.log("Updated with new records...");
+  });
