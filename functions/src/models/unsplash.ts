@@ -2,8 +2,6 @@ import axios from "axios";
 import { transformPosts } from "./transform";
 
 export const downloadPosts = async (size = 20) => {
-  console.log("API Key", process.env.UNSPLASH_API_KEY);
-
   const response = await axios.get("https://api.unsplash.com/search/photos", {
     headers: {
       Authorization: `Client-ID ${process.env.UNSPLASH_API_KEY}`,

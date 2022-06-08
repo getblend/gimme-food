@@ -25,7 +25,7 @@ type Connection<T> = {
 export async function paginateFirestore<T>(
   query: admin.firestore.Query,
   cursor: string | null = null,
-  limit: number = 2
+  limit: number = 11
 ): Promise<Connection<T>> {
   // get one more item for hasNextPage
   let q = query.limit(limit + 1);
