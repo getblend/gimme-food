@@ -1,4 +1,4 @@
-name: Build and test changes
+name: Build and test
 
 "on":
   pull_request:
@@ -6,7 +6,7 @@ name: Build and test changes
       - master
 
 jobs:
-  build_and_deploy:
+  build_and_test:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
