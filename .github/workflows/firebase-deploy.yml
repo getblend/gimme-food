@@ -5,6 +5,10 @@ name: Deploy to firebase
     branches:
       - master
 
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy_to_firebase:
     runs-on: macos-latest

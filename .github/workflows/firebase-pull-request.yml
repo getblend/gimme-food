@@ -5,6 +5,10 @@ name: Build and test
     branches:
       - master
 
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   build_and_test:
     runs-on: macos-latest
