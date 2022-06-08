@@ -35,4 +35,5 @@ jobs:
 
       - name: deploy to firebase
         run: |
+          cd functions/        
           yarn deploy --only functions --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}
