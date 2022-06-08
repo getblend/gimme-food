@@ -1,18 +1,20 @@
 import * as admin from "firebase-admin";
+import * as functions from "firebase-functions";
 
-// base64 encode the snapshot's path
+// Converts the snapshot path to a base64 string
 const encodeCursor = (
   snapshot:
     | admin.firestore.DocumentSnapshot
     | admin.firestore.QueryDocumentSnapshot
-) => {
-  return Buffer.from(snapshot.ref.path).toString("base64");
-};
+) => Buffer.from(snapshot.ref.path).toString("base64");
 
-const decodeCursor = (cursor: string) => {
-  return Buffer.from(cursor, "base64").toString("utf8");
-};
+// Parses the snapshot path from a base64 string
+const decodeCursor = (cursor: string) =>
+  Buffer.from(cursor, "base64").toString("utf8");
 
+/**
+ * Relay style pagination template
+ */
 type Connection<T> = {
   nodes: T[];
   pageInfo: {
@@ -22,6 +24,13 @@ type Connection<T> = {
   };
 };
 
+/**
+ * Wrap a query with a paginatior and generate a cursor
+ * @param query The query to filter the results with
+ * @param cursor The cursor from which position to get the information
+ * @param limit The number of records to fetch, defaults to 11.
+ * @returns The list of records paginated using cursors.
+ */
 export async function paginateFirestore<T>(
   query: admin.firestore.Query,
   cursor: string | null = null,
@@ -35,18 +44,11 @@ export async function paginateFirestore<T>(
     const path = decodeCursor(cursor);
     const snap = await admin.firestore().doc(path).get();
 
-    if (!snap.exists) {
-      return {
-        nodes: [],
-        pageInfo: {
-          hasNextPage: false,
-          count: 0,
-        },
-      };
+    // If the snapshot exists then start from the snapshot,
+    // Else start from scratch.
+    if (snap.exists) {
+      q = q.startAfter(snap);
     }
-
-    // pass to startAfter
-    q = q.startAfter(snap);
   }
 
   const snapshot = await q.get();

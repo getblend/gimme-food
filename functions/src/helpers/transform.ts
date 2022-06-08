@@ -1,5 +1,5 @@
-import { CoverPhoto, Post } from "./inputTypes";
-import { BlendPost } from "./outputTypes";
+import { CoverPhoto, Post } from "../models/inputTypes";
+import { BlendPost } from "../models/outputTypes";
 
 export const transformPosts = (posts: Post[]): BlendPost[] =>
   posts.flatMap(transformPost);
