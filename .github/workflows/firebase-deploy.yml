@@ -5,8 +5,12 @@ name: Deploy to firebase
     branches:
       - master
 
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
-  build_and_deploy:
+  deploy_to_firebase:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,8 +28,6 @@ jobs:
         run: |
           cd functions/
           yarn install --immutable
-          yarn lint
-          yarn build
 
       - name: create env file
         run: |
@@ -35,5 +37,5 @@ jobs:
 
       - name: deploy to firebase
         run: |
-          cd functions/        
-          yarn deploy --only functions --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GIMMEFOOD_D4740 }}
+          cd functions/
+          yarn deploy --only functions --token ${{ secrets.DEPLOY_TOKEN }}

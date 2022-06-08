@@ -1,13 +1,16 @@
-name: Build and test changes
+name: Build and test
 
 "on":
-  push:
   pull_request:
     branches:
       - master
 
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
-  build_and_deploy:
+  build_and_test:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,10 +19,6 @@ jobs:
           node-version: "16"
           cache: "yarn"
           cache-dependency-path: functions/yarn.lock
-
-      - name: install firebase-tools
-        run: |
-          npm i -g firebase-tools
 
       - name: install dependencies, lint & build
         run: |
