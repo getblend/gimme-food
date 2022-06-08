@@ -14,13 +14,17 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-dotenv.config({ debug: true });
+dotenv.config();
 
 const server = express();
 
 // Apply the rate limiting middleware to all requests
 server.use(limiter);
+
+// Helmet to block unwanted http attacks
 server.use(helmet());
+
+// Describing the API routes
 server.use("/", routes);
 
 export const api = functions.https.onRequest(server);
@@ -28,7 +32,8 @@ export const api = functions.https.onRequest(server);
 export const scheduledDownload = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => {
-    functions.logger.info("Downloading latest from Unsplash");
+    dotenv.config();
+    functions.logger.info("Downloading latest from unsplash");
     const posts = await downloadPosts(50);
     await createPosts(posts);
     functions.logger.log("Updated with new records...");
