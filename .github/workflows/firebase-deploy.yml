@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
+          cache-dependency-path: functions/yarn.lock
 
       - name: install firebase-tools
         run: |
