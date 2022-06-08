@@ -1,0 +1,28 @@
+name: Build and test changes
+
+"on":
+  push:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build_and_deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          cache: "yarn"
+
+      - name: install firebase-tools
+        run: |
+          npm i -g firebase-tools
+
+      - name: install dependencies, lint & build
+        run: |
+          cd functions/
+          yarn install --immutable
+          yarn lint
+          yarn build
