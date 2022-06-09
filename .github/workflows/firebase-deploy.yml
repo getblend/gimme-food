@@ -20,13 +20,9 @@ jobs:
           cache: "yarn"
           cache-dependency-path: functions/yarn.lock
 
-      - name: install firebase-tools
+      - name: install dependencies
         run: |
           npm i -g firebase-tools
-
-      - name: install dependencies, lint & build
-        run: |
-          cd functions/
           yarn install --immutable
 
       - name: create env file
