@@ -13,12 +13,6 @@ export const guard = (
   handler: Handler
 ): functions.HttpsFunction =>
   functions.https.onRequest((request, response) => {
-    // Ensure https
-    if (!request.secure) {
-      response.sendStatus(404);
-      return;
-    }
-
     // Validate HTTP method
     if (request.method !== method) {
       response.status(400).send("Invalid HTTP Method");
@@ -27,6 +21,12 @@ export const guard = (
 
     // Only check for Authentication if running outside the emulator
     if (!process.env.FUNCTIONS_EMULATOR) {
+      // Ensure https
+      if (!request.secure) {
+        response.sendStatus(404);
+        return;
+      }
+
       // Check for authorization header
       if (!request.headers.authorization) {
         response.status(400).send("API Key was not provided");

@@ -1,6 +1,9 @@
+import * as nodeFetch from "node-fetch";
 import * as functions from "firebase-functions";
 import { BlendPost } from "../models/outputTypes";
 import { transformPosts } from "./transform";
+
+const fetch = nodeFetch.default;
 
 /**
  * Base unsplash API
@@ -10,6 +13,11 @@ const unsplash = async <T = any>(
   params: Record<string, string>
 ) => {
   const searchParams = new URLSearchParams(params);
+
+  functions.logger.debug(
+    `Querying: https://api.unsplash.com${path}?${searchParams}`
+  );
+
   const response = await fetch(
     `https://api.unsplash.com${path}?${searchParams}`,
     {
