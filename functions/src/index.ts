@@ -1,9 +1,13 @@
+require("dotenv").config({
+  silent: true,
+});
+
 import * as express from "express";
 import rateLimit from "express-rate-limit";
 import * as functions from "firebase-functions";
 import helmet from "helmet";
-import { createPosts } from "./models/post";
 import { downloadRandom } from "./helpers/unsplash";
+import { createPosts } from "./models/post";
 import routes from "./routes";
 
 const limiter = rateLimit({
@@ -29,6 +33,10 @@ export const api = functions.https.onRequest(server);
 export const scheduledDownload = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => {
+    require("dotenv").config({
+      silent: true,
+    });
+
     functions.logger.info("Downloading latest from unsplash");
     const posts = await downloadRandom();
     await createPosts(posts);
