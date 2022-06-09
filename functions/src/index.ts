@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 import * as functions from "firebase-functions";
 import helmet from "helmet";
 import { createPosts } from "./models/post";
-import { downloadRandom } from "./helpers/unsplash";
+import { downloadPosts } from "./helpers/unsplash";
 import routes from "./routes";
 
 const limiter = rateLimit({
@@ -30,7 +30,7 @@ export const scheduledDownload = functions.pubsub
   .schedule("0 0 * * *")
   .onRun(async () => {
     functions.logger.info("Downloading latest from unsplash");
-    const posts = await downloadRandom();
+    const posts = await downloadPosts(100);
     await createPosts(posts);
     functions.logger.log("Updated with new records...");
     return null;
