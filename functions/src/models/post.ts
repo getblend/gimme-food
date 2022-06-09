@@ -43,12 +43,12 @@ export const createPost = async (post: BlendPost) => {
 };
 
 export const createPosts = async (posts: BlendPost[]) => {
+  const start = performance.now();
   let batch = db().batch();
   const postsRef = db().collection("posts");
   const tagsRef = db().collection("tags");
   const usersRef = db().collection("users");
 
-  functions.logger.info(`Processing tags`);
   const tagsCollection = posts.reduce((tags, post) => {
     post.tags.map((tag) => {
       if (tags.has(tag.unique)) {
@@ -66,11 +66,6 @@ export const createPosts = async (posts: BlendPost[]) => {
     return tags;
   }, new Map<string, FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>>());
 
-  await batch.commit();
-  functions.logger.info(`Wrote ${tagsCollection.size} records`);
-
-  batch = db().batch();
-  functions.logger.info(`Processing users`);
   const usersCollection = posts.reduce((users, post) => {
     if (users.has(post.user.id)) {
       return users;
@@ -86,12 +81,6 @@ export const createPosts = async (posts: BlendPost[]) => {
     return users;
   }, new Map<string, FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>>());
 
-  await batch.commit();
-  functions.logger.info(`Processing users`);
-  functions.logger.info(`Wrote ${usersCollection.size} records`);
-
-  batch = db().batch();
-  functions.logger.info(`Processing users`);
   for (const post of posts) {
     const postDocRef = postsRef.doc(post.id);
     batch.set(postDocRef, {
@@ -113,5 +102,7 @@ export const createPosts = async (posts: BlendPost[]) => {
   }
 
   await batch.commit();
-  functions.logger.info(`Wrote ${posts.length} records`);
+  const end = performance.now();
+  const duration = (end - start) / 1000;
+  functions.logger.info(`Wrote ${posts.length} posts in ${duration}s`);
 };
