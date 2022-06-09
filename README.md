@@ -25,11 +25,13 @@ Go head and run the following scripts to get the typescript built out
 ```sh
 cd functions
 yarn install
-yarn build:watch
 
-# In a separate terminal
-# Starts the emulators
-firebase emulators:start
+# Spin up two terminals
+# Terminal 1:
+yarn dev
+
+# Terminal 2:
+yarn start
 ```
 
 At some point you should see a status that the emulators are running.
@@ -39,7 +41,9 @@ Now open `api.http` and if you the rest client, you should be able to send reque
 
 If your port gets blocked run:
 
-```
-lsof -ti tcp:9199 | xargs kill -9
+```sh
+lsof -ti tcp:4000 | xargs kill -9
 lsof -ti tcp:5001 | xargs kill -9
+lsof -ti tcp:8085 | xargs kill -9
+lsof -ti tcp:9199 | xargs kill -9
 ```

@@ -1,58 +1,79 @@
-import axios from "axios";
-import { transformPosts } from "./transform";
+import * as nodeFetch from "node-fetch";
 import * as functions from "firebase-functions";
+import { BlendPost } from "../models/outputTypes";
+import { transformPosts } from "./transform";
 
-export const downloadPosts = async (size = 20) => {
-  functions.logger.info(`Downloading ${size} posts.`);
+const fetch = nodeFetch.default;
 
-  const response = await axios.get("https://api.unsplash.com/search/photos", {
-    headers: {
-      Authorization: `Client-ID ${process.env.UNSPLASH_API_KEY}`,
-    },
-    params: {
-      query: "Food",
-      page: 1,
-      per_page: size,
-      order_by: "latest",
-      content_filter: "high",
-      orientation: "portrait",
-    },
-  });
+/**
+ * Base unsplash API
+ */
+const unsplash = async <T = any>(
+  path: string,
+  params: Record<string, string>
+) => {
+  const searchParams = new URLSearchParams(params);
 
-  if (!response?.data?.results) {
-    functions.logger.error(`Failed to download posts.`, {
-      status: response.status,
-    });
-    throw new Error("Something went wrong when fetching information");
+  functions.logger.debug(
+    `Querying: https://api.unsplash.com${path}?${searchParams}`
+  );
+
+  const response = await fetch(
+    `https://api.unsplash.com${path}?${searchParams}`,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+        Authorization: `Client-ID ${process.env.UNSPLASH_API_KEY}`,
+      },
+    }
+  );
+
+  if (response.status !== 200) {
+    const error = `Failed to get data, status:${response.status}`;
+    functions.logger.error(error);
+    throw new Error(error);
   }
 
-  functions.logger.info(`Downloaded ${size} posts.`);
-  return transformPosts(response.data.results);
+  const data = await response.json();
+  return data as T;
 };
 
-export const downloadRandom = async () => {
-  functions.logger.info(`Downloading 30 random posts.`);
+/**
+ * Implementation of the Unsplash search API
+ * https://unsplash.com/documentation#search-photos
+ */
+export const searchPosts = async (search: string): Promise<BlendPost[]> => {
+  functions.logger.debug(`Downloading food images from unsplash`);
 
-  const response = await axios.get("https://api.unsplash.com/photos/random", {
-    headers: {
-      Authorization: `Client-ID ${process.env.UNSPLASH_API_KEY}`,
-    },
-    params: {
-      topics: "Food",
-      order_by: "latest",
-      content_filter: "high",
-      orientation: "portrait",
-      count: 30,
-    },
+  const data = await unsplash("/search/photos", {
+    query: search,
+    page: "1",
+    per_page: "30",
+    order_by: "latest",
+    content_filter: "high",
+    orientation: "portrait",
   });
 
-  if (!response?.data) {
-    functions.logger.error(`Failed to download posts.`, {
-      status: response.status,
-    });
-    throw new Error("Something went wrong when fetching information");
-  }
+  functions.logger.info(`Downloaded ${data?.results?.length ?? 0} posts`);
+  return transformPosts(data?.results);
+};
 
-  functions.logger.info(`Downloaded ${response.data.length} random posts.`);
-  return transformPosts(response.data);
+/**
+ * Implementation of the Unsplash random API
+ * https://unsplash.com/documentation#get-a-random-photo
+ */
+export const downloadRandom = async (): Promise<BlendPost[]> => {
+  functions.logger.debug(`Downloading random posts`);
+
+  const data = await unsplash("/photos/random", {
+    topics: "Food",
+    order_by: "latest",
+    content_filter: "high",
+    orientation: "portrait",
+    count: "30",
+  });
+
+  functions.logger.info(`Downloaded ${data?.length ?? 0} posts.`);
+  return transformPosts(data);
 };

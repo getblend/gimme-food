@@ -33,6 +33,7 @@ jobs:
           echo BLEND_ADMIN_KEY=${{ secrets.BLEND_ADMIN_KEY }} >> .env
           echo BLEND_CLIENT_EMAIL=${{ secrets.BLEND_CLIENT_EMAIL }} >> .env
           echo BLEND_PROJECT_ID=${{ secrets.BLEND_PROJECT_ID }} >> .env
+          echo BLEND_API_KEY=${{ secrets.BLEND_API_KEY }} >> .env
           echo UNSPLASH_API_KEY=${{ secrets.UNSPLASH_API_KEY }} >> .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
 

@@ -1,24 +1,30 @@
-@baseurl = http://localhost:5001/gimmefood-d4740/us-central1/api
+@baseurl = http://localhost:5001/gimmefood-d4740/us-central1
 
-# @name helloWorld
-GET {{baseurl}} HTTP/1.1
+# @name search
+GET {{baseurl}}/search?query=cats HTTP/1.1
 Content-Type: application/json
 
 ### 
 
-# @name seedDb
+# @name seed
 POST {{baseurl}}/seed HTTP/1.1
 Content-Type: application/json
 
-###
+### 
 
-# @name fetchPosts
-GET {{baseurl}}/food HTTP/1.1
+# @name random
+POST {{baseurl}}/random HTTP/1.1
 Content-Type: application/json
 
 ###
-@cursor = {{fetchPosts.response.body.pageInfo.endCursor}}
 
-# @name fetchPostsBasedCursor
-GET {{baseurl}}/food?cursor={{cursor}} HTTP/1.1
+# @name posts
+GET {{baseurl}}/posts HTTP/1.1
+Content-Type: application/json
+
+###
+@cursor = {{posts.response.body.pageInfo.endCursor}}
+
+# @name postsWithCursor
+GET {{baseurl}}/posts?cursor={{cursor}} HTTP/1.1
 Content-Type: application/json

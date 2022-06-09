@@ -1,95 +1,70 @@
-import * as functions from "firebase-functions";
-import { CoverPhoto, Post } from "../models/inputTypes";
+import { Post } from "../models/inputTypes";
 import { BlendPost } from "../models/outputTypes";
 
-export const transformPosts = (posts: Post[]): BlendPost[] => {
-  const output = posts.flatMap(transformPost);
-  functions.logger.info(`Transformed ${output.length} posts.`);
-  return output;
-};
+export const transformPosts = (posts: Post[] = []): BlendPost[] =>
+  posts.map(transformPost);
 
-const transformPost = (post: Post): BlendPost[] => {
-  const [tags, posts] = transformTags(post);
-  return [
-    {
-      id: post.id,
-      created_at: new Date(post.created_at),
-      width: post.width,
-      height: post.height,
-      color: post.color,
-      description: post.description,
-      alt_description: post.alt_description,
-      urls: transformUrls(post),
-      likes: post.likes,
-      user: transformUser(post.user),
-      tags: tags,
-    },
-    ...posts,
-  ];
-};
+/**
+ * Convert the incoming information into something that's compatible with our systems
+ */
+const transformPost = (post: Post): BlendPost => ({
+  alt_description: post.alt_description,
+  color: post.color,
+  created_at: new Date(post.created_at),
+  description: post.description,
+  height: post.height,
+  id: post.id,
+  likes: post.likes,
+  tags: transformTags(post.tags),
+  urls: transformUrls(post),
+  user: transformUser(post.user),
+  width: post.width,
+});
 
-const transformTags = (post: Post): [BlendPost["tags"], BlendPost[]] => {
-  const { tags, posts } = post.tags.reduce(
-    (acc, tag) => {
-      if (!tag.source) return acc;
+/**
+ * Converts a bunch of tags into a simplified version
+ */
+const transformTags = (tags: Post["tags"] = []): BlendPost["tags"] =>
+  tags.reduce((acc, tag) => {
+    if (!tag.source) return acc;
 
-      const simpleTag: BlendPost["tags"][0] = {
-        unique: tag.title,
-        title: tag.source.title,
-        description: tag.source.description,
-      };
+    const simpleTag: BlendPost["tags"][0] = {
+      unique: tag.title,
+      title: tag.source.title,
+      description: tag.source.description,
+    };
 
-      acc.tags.push(simpleTag);
+    acc.push(simpleTag);
+    return acc;
+  }, [] as BlendPost["tags"]);
 
-      if (!tag.source.cover_photo) {
-        return acc;
-      }
-
-      const post: BlendPost = {
-        id: tag.source.cover_photo.id,
-        created_at: new Date(tag.source.cover_photo.created_at),
-        width: tag.source.cover_photo.width,
-        height: tag.source.cover_photo.height,
-        color: tag.source.cover_photo.color,
-        description: tag.source.cover_photo.description,
-        alt_description: tag.source.cover_photo.alt_description,
-        urls: transformUrls(tag.source.cover_photo),
-        likes: tag.source.cover_photo.likes,
-        user: transformUser(tag.source.cover_photo.user),
-        tags: [simpleTag],
-      };
-
-      acc.posts.push(post);
-      return acc;
-    },
-    { posts: [] as BlendPost[], tags: [] as BlendPost["tags"] }
-  );
-  return [tags, posts];
-};
-
-const transformUrls = (post: Post | CoverPhoto): BlendPost["urls"] => ({
+/**
+ * Extract URLs for the image using the post information
+ */
+const transformUrls = (post: Post): BlendPost["urls"] => ({
   blur_hash: post.blur_hash,
   download: post.links.download,
   regular: post.urls.regular,
   small_s3: post.urls.small_s3,
 });
 
-const transformUser = (
-  user: Post["user"] | CoverPhoto["user"]
-): BlendPost["user"] => ({
-  id: user.id,
-  updated_at: new Date(user.updated_at),
-  username: user.username,
-  name: user.name,
-  first_name: user.first_name,
-  last_name: user.last_name,
+/**
+ * Given a user, extract the user information
+ */
+const transformUser = (user: Post["user"]): BlendPost["user"] => ({
   bio: user.bio,
+  first_name: user.first_name,
+  id: user.id,
+  last_name: user.last_name,
   location: user.location,
+  name: user.name,
   profile_image: user.profile_image.large,
   social: {
-    twitter_username: user.twitter_username,
     instagram_username: user.instagram_username,
     paypal_email: user.social?.paypal_email,
     portfolio_url: user.portfolio_url,
+    twitter_username: user.twitter_username,
   },
+  updated_at: new Date(user.updated_at),
+  username: user.username,
 });
