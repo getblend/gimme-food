@@ -26,9 +26,17 @@ jobs:
           cd functions/
           yarn install --immutable
 
-      - name: deploy to firebase
+      - name: create .env file
         run: |
           cd functions/
           touch .env
-          echo ${{ secrets.DOTENV_CONFIG }} >> .env
+          echo ${{ secrets.BLEND_ADMIN_KEY }} >> .env
+          echo ${{ secrets.BLEND_CLIENT_EMAIL }} >> .env
+          echo ${{ secrets.BLEND_PROJECT_ID }} >> .env
+          echo ${{ secrets.UNSPLASH_API_KEY }} >> .env
+          echo ${{ secrets.DATABASE_URL }} >> .env
+
+      - name: deploy to firebase
+        run: |
+          cd functions/
           yarn deploy --only functions --token ${{ secrets.DEPLOY_TOKEN }}

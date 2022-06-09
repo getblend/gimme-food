@@ -10,7 +10,7 @@ export const db = () => {
 
   if (process.env.FUNCTIONS_EMULATOR) {
     process.env.FIRESTORE_EMULATOR_HOST = "localhost:9199";
-    functions.logger.log("Using local firestore instance");
+    functions.logger.info("Using local firestore instance");
   }
 
   if (!admin.apps.length) {

@@ -4,7 +4,7 @@ import { BlendPost } from "../models/outputTypes";
 
 export const transformPosts = (posts: Post[]): BlendPost[] => {
   const output = posts.flatMap(transformPost);
-  functions.logger.log(`Transformed ${output.length} posts.`);
+  functions.logger.info(`Transformed ${output.length} posts.`);
   return output;
 };
 
