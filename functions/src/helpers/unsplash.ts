@@ -35,16 +35,13 @@ const unsplash = async <T = any>(
  * Implementation of the Unsplash search API
  * https://unsplash.com/documentation#search-photos
  */
-export const downloadPosts = async (
-  search = "Food",
-  size = 20
-): Promise<BlendPost[]> => {
+export const searchPosts = async (search: string): Promise<BlendPost[]> => {
   functions.logger.debug(`Downloading food images from unsplash`);
 
   const data = await unsplash("/search/photos", {
     query: search,
     page: "1",
-    per_page: `${size}`,
+    per_page: "30",
     order_by: "latest",
     content_filter: "high",
     orientation: "portrait",

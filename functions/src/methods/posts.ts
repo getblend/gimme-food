@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { db } from "../helpers/db";
 import { paginateFirestore } from "../helpers/cursor";
+import { db } from "../helpers/db";
+import { guard } from "../helpers/guard";
 import { BlendPost } from "../models/outputTypes";
 
-export const food = async (request: Request, response: Response) => {
+export const posts = guard("GET", async (request, response) => {
   const query = db().collection("posts").orderBy("created_at", "desc");
   const connection = paginateFirestore<BlendPost>(
     query,
@@ -11,4 +11,4 @@ export const food = async (request: Request, response: Response) => {
   );
   const data = await connection;
   response.status(200).json(data);
-};
+});
