@@ -53,6 +53,6 @@ export const downloadRandom = async () => {
     throw new Error("Something went wrong when fetching information");
   }
 
-  functions.logger.info(`Downloaded ${30} random posts.`);
-  return transformPosts(response.data.results);
+  functions.logger.info(`Downloaded ${response.data.length} random posts.`);
+  return transformPosts(response.data);
 };
