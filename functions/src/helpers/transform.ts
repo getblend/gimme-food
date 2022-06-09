@@ -1,8 +1,12 @@
+import * as functions from "firebase-functions";
 import { CoverPhoto, Post } from "../models/inputTypes";
 import { BlendPost } from "../models/outputTypes";
 
-export const transformPosts = (posts: Post[]): BlendPost[] =>
-  posts.flatMap(transformPost);
+export const transformPosts = (posts: Post[]): BlendPost[] => {
+  const output = posts.flatMap(transformPost);
+  functions.logger.log(`Transformed ${output.length} posts.`);
+  return output;
+};
 
 const transformPost = (post: Post): BlendPost[] => {
   const [tags, posts] = transformTags(post);

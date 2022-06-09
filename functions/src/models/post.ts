@@ -1,3 +1,4 @@
+import * as functions from "firebase-functions";
 import { db } from "../db";
 import { BlendPost } from "./outputTypes";
 
@@ -47,6 +48,7 @@ export const createPosts = async (posts: BlendPost[]) => {
   const tagsRef = db().collection("tags");
   const usersRef = db().collection("users");
 
+  functions.logger.log(`Processing tags`);
   const tagsCollection = posts.reduce((tags, post) => {
     post.tags.map((tag) => {
       if (tags.has(tag.unique)) {
@@ -65,8 +67,10 @@ export const createPosts = async (posts: BlendPost[]) => {
   }, new Map<string, FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>>());
 
   await batch.commit();
-  batch = db().batch();
+  functions.logger.log(`Wrote ${tagsCollection.size} records`);
 
+  batch = db().batch();
+  functions.logger.log(`Processing users`);
   const usersCollection = posts.reduce((users, post) => {
     if (users.has(post.user.id)) {
       return users;
@@ -83,8 +87,11 @@ export const createPosts = async (posts: BlendPost[]) => {
   }, new Map<string, FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>>());
 
   await batch.commit();
-  batch = db().batch();
+  functions.logger.log(`Processing users`);
+  functions.logger.log(`Wrote ${usersCollection.size} records`);
 
+  batch = db().batch();
+  functions.logger.log(`Processing users`);
   for (const post of posts) {
     const postDocRef = postsRef.doc(post.id);
     batch.set(postDocRef, {
@@ -106,4 +113,5 @@ export const createPosts = async (posts: BlendPost[]) => {
   }
 
   await batch.commit();
+  functions.logger.log(`Wrote ${posts.length} records`);
 };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { transformPosts } from "./transform";
+import * as functions from "firebase-functions";
 
 export const downloadPosts = async (size = 20) => {
   const response = await axios.get("https://api.unsplash.com/search/photos", {
@@ -17,9 +18,11 @@ export const downloadPosts = async (size = 20) => {
   });
 
   if (!response?.data?.results) {
+    functions.logger.error(`Failed to download posts.`);
     throw new Error("Something went wrong when fetching information");
   }
 
+  functions.logger.log(`Downloaded ${size} posts.`);
   return transformPosts(response.data.results);
 };
 
@@ -37,9 +40,11 @@ export const downloadRandom = async () => {
     },
   });
 
-  if (!response?.data?.results) {
+  if (!response?.data) {
+    functions.logger.error(`Failed to download posts.`);
     throw new Error("Something went wrong when fetching information");
   }
 
+  functions.logger.log(`Downloaded ${30} random posts.`);
   return transformPosts(response.data.results);
 };

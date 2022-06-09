@@ -1,6 +1,6 @@
 name: Deploy to firebase
 
-"on":
+on:
   push:
     branches:
       - master
@@ -22,17 +22,13 @@ jobs:
 
       - name: install dependencies
         run: |
-          cd functions/
           npm i -g firebase-tools
-          yarn install --immutable
-
-      - name: create env file
-        run: |
           cd functions/
-          touch .env
-          echo ${{ secrets.DOTENV_CONFIG }} >> .env
+          yarn install --immutable
 
       - name: deploy to firebase
         run: |
           cd functions/
+          touch .env
+          echo ${{ secrets.DOTENV_CONFIG }} >> .env
           yarn deploy --only functions --token ${{ secrets.DEPLOY_TOKEN }}
