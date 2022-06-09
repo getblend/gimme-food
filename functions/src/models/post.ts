@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import { db } from "../db";
+import { db } from "../helpers/db";
 import { BlendPost } from "./outputTypes";
 
 export const createPost = async (post: BlendPost) => {

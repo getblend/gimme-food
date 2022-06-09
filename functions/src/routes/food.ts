@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db } from "../db";
+import { db } from "../helpers/db";
 import { paginateFirestore } from "../helpers/cursor";
 import { BlendPost } from "../models/outputTypes";
 
