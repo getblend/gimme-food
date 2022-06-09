@@ -30,12 +30,11 @@ jobs:
         run: |
           cd functions/
           touch .env
-          echo ${{ secrets.BLEND_ADMIN_KEY }} >> .env
-          echo ${{ secrets.BLEND_CLIENT_EMAIL }} >> .env
-          echo ${{ secrets.BLEND_PROJECT_ID }} >> .env
-          echo ${{ secrets.UNSPLASH_API_KEY }} >> .env
-          echo ${{ secrets.DATABASE_URL }} >> .env
-          cat .env
+          echo BLEND_ADMIN_KEY=${{ secrets.BLEND_ADMIN_KEY }} >> .env
+          echo BLEND_CLIENT_EMAIL=${{ secrets.BLEND_CLIENT_EMAIL }} >> .env
+          echo BLEND_PROJECT_ID=${{ secrets.BLEND_PROJECT_ID }} >> .env
+          echo UNSPLASH_API_KEY=${{ secrets.UNSPLASH_API_KEY }} >> .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
 
       - name: deploy to firebase
         run: |
