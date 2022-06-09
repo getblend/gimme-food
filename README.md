@@ -25,7 +25,7 @@ Go head and run the following scripts to get the typescript built out
 ```sh
 cd functions
 yarn install
-yarn build:watch
+yarn dev
 
 # In a separate terminal
 # Starts the emulators
