@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import { paginateFirestore } from "../models/cursor";
+import { paginateFirestore } from "../helpers/cursor";
 import { BlendPost } from "../models/outputTypes";
 
 export const food = async (request: Request, response: Response) => {
