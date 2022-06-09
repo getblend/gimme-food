@@ -35,6 +35,7 @@ jobs:
           echo ${{ secrets.BLEND_PROJECT_ID }} >> .env
           echo ${{ secrets.UNSPLASH_API_KEY }} >> .env
           echo ${{ secrets.DATABASE_URL }} >> .env
+          cat .env
 
       - name: deploy to firebase
         run: |
