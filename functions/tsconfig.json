@@ -7,11 +7,16 @@
     "sourceMap": false,
     "strict": true,
     "target": "es2017",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   },
   "compileOnSave": true,
   "include": [
     "src",
     ".eslintrc.js"
-  ]
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
 }
