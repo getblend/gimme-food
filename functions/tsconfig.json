@@ -6,9 +6,16 @@
     "outDir": "lib",
     "sourceMap": false,
     "strict": true,
-    "target": "es2017",
+    "target": "ES2018",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "lib": [
+      "es2018",
+      "esnext.asynciterable"
+    ]
   },
   "compileOnSave": true,
   "include": [

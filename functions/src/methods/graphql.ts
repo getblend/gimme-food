@@ -1,12 +1,20 @@
+import * as path from "path";
 import { ApolloServer } from "apollo-server-cloud-functions";
 import * as functions from "firebase-functions";
+import { buildSchemaSync } from "type-graphql";
+import { PartnerResolver } from "../graphql/resolvers/partner.resolver";
 
-import { typeDefs } from "../graphql/typedefs";
-import { resolvers } from "../graphql/resolvers";
+const schema = buildSchemaSync({
+  resolvers: [PartnerResolver],
+  emitSchemaFile: {
+    path: path.resolve(__dirname, "../graphql/generated.gql"),
+    commentDescriptions: true,
+    sortedSchema: true,
+  },
+});
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
   csrfPrevention: true,
   cache: "bounded",
 });

@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 export { posts } from "./methods/posts";
 export { random } from "./methods/random";
 export { scheduledDownload } from "./methods/scheduledDownload";
