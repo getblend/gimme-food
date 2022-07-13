@@ -30,7 +30,7 @@ class PageInfo {
 
 export default function PaginatedResponse<TItem>(
   name: string,
-  TItemClass: ClassType<TItem>
+  TItemClass: TItem
 ) {
   @ObjectType(`${name}List`)
   abstract class PaginatedResponseClass {

@@ -3,9 +3,10 @@ import { ApolloServer } from "apollo-server-cloud-functions";
 import * as functions from "firebase-functions";
 import { buildSchemaSync } from "type-graphql";
 import { PartnerResolver } from "../graphql/resolvers/partner.resolver";
+import { PostResolver } from "../graphql/resolvers/post.resolver";
 
 const schema = buildSchemaSync({
-  resolvers: [PartnerResolver],
+  resolvers: [PartnerResolver, PostResolver],
   emitSchemaFile: {
     path: path.resolve(__dirname, "../graphql/generated.gql"),
     commentDescriptions: true,

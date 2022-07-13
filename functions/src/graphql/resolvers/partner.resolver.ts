@@ -1,10 +1,9 @@
-import { Query, Resolver } from "type-graphql";
+import { Resolver } from "type-graphql";
 import { PartnerList } from "../schema/models/partner";
 
 @Resolver()
 export class PartnerResolver {
-  @Query((returns) => PartnerList)
-  partnerList(): PartnerList {
+  partners(): PartnerList {
     return {
       nodes: [],
       pageInfo: {

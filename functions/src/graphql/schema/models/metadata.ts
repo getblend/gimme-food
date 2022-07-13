@@ -1,6 +1,9 @@
 import { Field, ID, ObjectType } from "type-graphql";
 
-@ObjectType({ description: "Object time tracking" })
+@ObjectType({
+  description: "Object time tracking",
+  isAbstract: true,
+})
 export class ObjectTracking {
   @Field({
     description: "Unique username for partner",
