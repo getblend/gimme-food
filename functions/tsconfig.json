@@ -6,12 +6,24 @@
     "outDir": "lib",
     "sourceMap": false,
     "strict": true,
-    "target": "es2017",
-    "resolveJsonModule": true
+    "target": "ES2018",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "lib": [
+      "es2018",
+      "esnext.asynciterable"
+    ]
   },
   "compileOnSave": true,
   "include": [
     "src",
     ".eslintrc.js"
-  ]
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
 }
