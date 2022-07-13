@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import * as functions from "firebase-functions";
+import { PageInfo } from "../graphql/schema/models/pagination";
 
 // Converts the snapshot path to a base64 string
 const encodeCursor = (
@@ -15,13 +15,10 @@ const decodeCursor = (cursor: string) =>
 /**
  * Relay style pagination template
  */
-type Connection<T> = {
+export type Connection<T> = {
   nodes: T[];
-  pageInfo: {
-    hasNextPage: boolean;
-    endCursor?: string | null;
-    count: number;
-  };
+  pageInfo: PageInfo;
+  total: number;
 };
 
 /**
@@ -31,11 +28,12 @@ type Connection<T> = {
  * @param limit The number of records to fetch, defaults to 11.
  * @returns The list of records paginated using cursors.
  */
-export async function paginateFirestore<T>(
+export async function paginateFirestore<T, TOutput = T>(
   query: admin.firestore.Query,
   cursor: string | null = null,
-  limit: number = 11
-): Promise<Connection<T>> {
+  limit: number = 11,
+  creator: (data: T) => TOutput
+): Promise<Connection<TOutput>> {
   // get one more item for hasNextPage
   let q = query.limit(limit + 1);
 
@@ -57,16 +55,19 @@ export async function paginateFirestore<T>(
   // make the path of the last document a cursor
   const endCursor = hasNextPage
     ? encodeCursor(snapshot.docs[snapshot.docs.length - 1])
-    : null;
+    : undefined;
 
-  const data = snapshot.docs.map((doc) => doc.data() as T);
+  const data = snapshot.docs.map((doc) => creator(doc.data() as T));
+
+  const pageInfo = new PageInfo();
+  pageInfo.endCursor = endCursor;
+  pageInfo.hasNextPage = hasNextPage;
+  pageInfo.hasPreviousPage = false;
+  pageInfo.startCursor = undefined;
 
   return {
     nodes: data,
-    pageInfo: {
-      hasNextPage,
-      endCursor,
-      count: snapshot.size,
-    },
+    pageInfo,
+    total: snapshot.size,
   };
 }

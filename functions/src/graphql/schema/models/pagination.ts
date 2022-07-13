@@ -1,10 +1,25 @@
-import { Field, Int, ObjectType, ClassType } from "type-graphql";
+import { Field, Int, ObjectType, ClassType, ArgsType } from "type-graphql";
+
+@ArgsType()
+export class PageInfoArgs {
+  @Field({ nullable: true })
+  before?: string;
+
+  @Field({ nullable: true })
+  after?: string;
+
+  @Field(() => Int, { nullable: true })
+  first?: number;
+
+  @Field(() => Int, { nullable: true })
+  last?: number;
+}
 
 @ObjectType("PageInfo", {
   description: "Relay style pageInfo object",
   isAbstract: true,
 })
-class PageInfo {
+export class PageInfo {
   @Field({
     description: "field for startCursor",
     nullable: true,

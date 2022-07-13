@@ -2,7 +2,7 @@ import { createUnionType } from "type-graphql";
 import PaginatedResponse from "../pagination";
 import { ImagePost } from "./imagePost";
 
-const Post = createUnionType({
+export const Post = createUnionType({
   name: "Post",
   types: () => [ImagePost] as const,
 });
