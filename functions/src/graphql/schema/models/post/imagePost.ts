@@ -1,12 +1,11 @@
-import { Field, Int, ObjectType } from "type-graphql";
 import { GraphQLURL } from "graphql-scalars";
-
-import { GenericPost } from "./genericPost";
+import { Field, Int, ObjectType } from "type-graphql";
+import { BasePost } from "./genericPost";
 
 @ObjectType("ImagePost", {
   description: "An image post",
 })
-export class ImagePost extends GenericPost {
+export class ImagePost extends BasePost {
   @Field(() => Int, { description: "The width of the image" })
   width: number;
 

@@ -1,5 +1,6 @@
-import { createUnionType } from "type-graphql";
-import PaginatedResponse from "../pagination";
+import { createUnionType, ObjectType } from "type-graphql";
+import { withPagination } from "../../mixins";
+
 import { ImagePost } from "./imagePost";
 
 export const Post = createUnionType({
@@ -7,5 +8,7 @@ export const Post = createUnionType({
   types: () => [ImagePost] as const,
 });
 
-export const PostList = PaginatedResponse("Post", Post);
-export type PostList = InstanceType<typeof PostList>;
+@ObjectType({ description: "A collection of posts" })
+export class PostCollection extends withPagination(Post) {}
+
+export { ImagePost };

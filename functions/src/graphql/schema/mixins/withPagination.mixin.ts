@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType, ClassType, ArgsType } from "type-graphql";
+import { ArgsType, ClassType, Field, Int, ObjectType } from "type-graphql";
 
 @ArgsType()
 export class PageInfoArgs {
@@ -15,10 +15,7 @@ export class PageInfoArgs {
   last?: number;
 }
 
-@ObjectType("PageInfo", {
-  description: "Relay style pageInfo object",
-  isAbstract: true,
-})
+@ObjectType({ isAbstract: true })
 export class PageInfo {
   @Field({
     description: "field for startCursor",
@@ -43,24 +40,21 @@ export class PageInfo {
   public hasPreviousPage: boolean;
 }
 
-export default function PaginatedResponse<TItem>(
-  name: string,
-  TItemClass: TItem
-) {
-  @ObjectType(`${name}List`)
-  abstract class PaginatedResponseClass {
+export function withPagination<TClassType>(BaseClass: TClassType) {
+  @ObjectType({ isAbstract: true })
+  abstract class PaginatedResponse {
     // here we use the runtime argument
-    @Field((type) => [TItemClass])
+    @Field(() => [BaseClass])
     // and here the generic type
-    nodes: TItem[];
+    nodes: TClassType[];
 
-    @Field((type) => PageInfo)
+    @Field(() => PageInfo)
     // and here the generic type
     pageInfo: PageInfo;
 
-    @Field((type) => Int)
+    @Field(() => Int)
     total: number;
   }
 
-  return PaginatedResponseClass;
+  return PaginatedResponse;
 }
