@@ -4,11 +4,11 @@ import { BlendPost } from "../../../models/outputTypes";
 import {
   ImagePost,
   PageInfoArgs,
-  Post,
   PostCollection,
-  User,
+  PostType,
 } from "../../schema";
 import { Context } from "../interface";
+import { createUser } from "./user.repository";
 
 export class PostRepository {
   constructor(private context: Context) {}
@@ -18,7 +18,7 @@ export class PostRepository {
       .collection("posts")
       .orderBy("created_at", "desc");
 
-    const connection = paginateFirestore<BlendPost, typeof Post>(
+    const connection = paginateFirestore<BlendPost, typeof PostType>(
       query,
       currentPage.after,
       currentPage.first,
@@ -30,7 +30,7 @@ export class PostRepository {
   }
 }
 
-const createPost = (data: BlendPost): typeof Post => createImagePost(data);
+const createPost = (data: BlendPost): typeof PostType => createImagePost(data);
 
 const createImagePost = (data: BlendPost): ImagePost =>
   make(ImagePost, {
@@ -48,17 +48,4 @@ const createImagePost = (data: BlendPost): ImagePost =>
     width: data.width,
     description: data.description,
     title: undefined,
-  });
-
-const createUser = (data: BlendPost["user"]): User =>
-  make(User, {
-    firstName: data.name,
-    lastName: data.name,
-    phoneNumber: "+1234351234",
-    profileImage: new URL(data.profile_image),
-    userName: data.username,
-    id: data.username,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    email: "a@b.xyz",
   });

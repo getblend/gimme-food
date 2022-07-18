@@ -1,15 +1,19 @@
 import { AuthenticationError } from "apollo-server-cloud-functions";
 import { Request } from "firebase-functions";
 
-import { AuthContext, AuthenticatedUser } from "./interface";
+import { AuthContext, AuthenticatedUser, Context } from "./interface";
 
 function validateAPIKey(
+  context: Context,
   apiKey: string | string[] | undefined
 ): apiKey is string {
-  if (!process.env.BLEND_API_KEY) {
+  if (context.core.debugMode) return true;
+
+  if (!context.core.env.blendApiKey) {
     throw new AuthenticationError("No API Key was validated on the server");
   }
-  return apiKey === process.env.BLEND_API_KEY.toLowerCase();
+
+  return apiKey === context.core.env.blendApiKey.toLowerCase();
 }
 
 async function authenticateUser(
@@ -25,11 +29,14 @@ async function authenticateUser(
   });
 }
 
-export const createAuthContext = async (req: Request): Promise<AuthContext> => {
+export const createAuthContext = async (
+  context: Context,
+  req: Request
+): Promise<AuthContext> => {
   const token = req.headers.authorization;
   const apiKey = req.headers["x-api-key"];
 
-  if (!validateAPIKey(apiKey)) {
+  if (!validateAPIKey(context, apiKey)) {
     throw new AuthenticationError("Invalid API Key was provided");
   }
 
@@ -38,6 +45,5 @@ export const createAuthContext = async (req: Request): Promise<AuthContext> => {
 
   return {
     user,
-    apiKey,
   };
 };

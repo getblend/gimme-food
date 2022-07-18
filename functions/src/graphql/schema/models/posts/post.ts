@@ -1,13 +1,12 @@
 import { GraphQLHSLA } from "graphql-scalars";
-import { Field, ID, Int, ObjectType } from "type-graphql";
-import { withObjectTracking } from "../../mixins";
-import { withID } from "../../mixins/withId.mixin";
+import { Field, Int, ObjectType } from "type-graphql";
 
+import { withObjectTracking } from "../../mixins";
 import { Tag } from "../tag";
 import { User } from "../user";
 
 @ObjectType({ isAbstract: true })
-class PostDetails {
+export class Post extends withObjectTracking("Post") {
   @Field({
     description: "Title of the post",
     nullable: true,
@@ -34,8 +33,3 @@ class PostDetails {
   @Field(() => Int, { description: "The total number of likes on the post" })
   public likes: number;
 }
-
-@ObjectType({ isAbstract: true })
-export abstract class BasePost extends withID(
-  withObjectTracking(PostDetails)
-) {}

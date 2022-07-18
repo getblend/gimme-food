@@ -6,13 +6,11 @@ import {
 import { Field, ObjectType } from "type-graphql";
 
 import { withObjectTracking } from "../mixins";
-import { withID } from "../mixins/withId.mixin";
 
 @ObjectType({
   description: "A details of the user",
-  isAbstract: true,
 })
-class UserDetails {
+export class User extends withObjectTracking("User") {
   @Field({
     description: "Unique username for user",
   })
@@ -45,8 +43,3 @@ class UserDetails {
   })
   public email: string;
 }
-
-@ObjectType({
-  description: "A user",
-})
-export class User extends withID(withObjectTracking(UserDetails)) {}

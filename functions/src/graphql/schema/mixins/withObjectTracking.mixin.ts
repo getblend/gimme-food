@@ -1,19 +1,23 @@
-import { ClassType, Field, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 
-export function withObjectTracking<TClassType extends ClassType>(
-  BaseClass: TClassType
-) {
+export const withObjectTracking = (tag: string) => {
   @ObjectType({ isAbstract: true })
-  class ObjectTracking extends BaseClass {
+  abstract class ObjectTracking {
+    @Field(() => ID, {
+      description: `UniqueID of ${tag}`,
+    })
+    public id: string;
+
     @Field({
-      description: `Timestamp when the ${BaseClass.name} was created`,
+      description: `Timestamp when the ${tag} was created`,
     })
     public createdAt: Date;
 
     @Field({
-      description: `Timestamp when the ${BaseClass.name} was updated`,
+      description: `Timestamp when the ${tag} was updated`,
     })
     public updatedAt: Date;
   }
+
   return ObjectTracking;
-}
+};

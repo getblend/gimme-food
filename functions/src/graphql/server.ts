@@ -6,13 +6,10 @@ import { buildSchemaSync } from "type-graphql";
 import { createContext } from "./context";
 import { resolvers } from "./resolvers";
 
+const debugMode = !!process.env.FUNCTIONS_EMULATOR;
+
 const schema = buildSchemaSync({
   resolvers,
-  emitSchemaFile: {
-    path: path.resolve(__dirname, "../graphql/schema.gql"),
-    commentDescriptions: true,
-    sortedSchema: true,
-  },
 });
 
 const server = new ApolloServer({
@@ -21,7 +18,10 @@ const server = new ApolloServer({
   cache: "bounded",
   context: createContext,
   allowBatchedHttpRequests: true,
+  debug: debugMode,
 });
 
 const graphqlHandler = server.createHandler();
-export const graphql = functions.https.onRequest(graphqlHandler as any);
+export const graphql = functions
+  .region("asia-east1")
+  .https.onRequest(graphqlHandler as any);

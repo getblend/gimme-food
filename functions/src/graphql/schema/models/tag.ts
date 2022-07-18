@@ -1,11 +1,10 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import { withObjectTracking } from "../mixins";
-import { withID } from "../mixins/withId.mixin";
 
 @ObjectType({
-  isAbstract: true,
+  description: "A tag",
 })
-class TagDetails {
+export class Tag extends withObjectTracking("Tag") {
   @Field({
     description: "Title of the tag",
   })
@@ -14,8 +13,3 @@ class TagDetails {
   @Field({ description: "Description for the tag", nullable: true })
   public description?: string;
 }
-
-@ObjectType({
-  description: "A tag",
-})
-export class Tag extends withID(withObjectTracking(TagDetails)) {}

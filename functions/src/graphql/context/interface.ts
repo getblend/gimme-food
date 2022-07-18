@@ -3,10 +3,10 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 import { PostRepository } from "./data/post.repository";
+import { UserRepository } from "./data/user.repository";
 
 export interface AuthContext {
   user: AuthenticatedUser;
-  apiKey: string;
 }
 
 export interface AuthenticatedUser {
@@ -33,6 +33,7 @@ export interface CoreContext {
 
 export interface DataContext {
   post: PostRepository;
+  user: UserRepository;
 }
 
 export type Context = {

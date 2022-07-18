@@ -6,18 +6,15 @@ import { createCoreContext } from "./core.context";
 import { createDataContext } from "./data";
 import { Context } from "./interface";
 
-export const createContext: ContextFunction<ExpressContext, Context> = async ({
-  req,
-  res,
-}) => {
+export const createContext: ContextFunction<ExpressContext, Context> = async (
+  request
+) => {
   let context = {} as Context;
 
-  context = {
-    auth: await createAuthContext(req),
-    core: createCoreContext(),
-    data: createDataContext(context),
-    request: { req, res },
-  };
+  context.core = createCoreContext();
+  context.data = createDataContext(context);
+  context.auth = await createAuthContext(context, request.req);
+  context.request = request;
 
   return context;
 };
