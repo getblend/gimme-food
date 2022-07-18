@@ -1,21 +1,16 @@
-import { Field, ID, ObjectType } from "type-graphql";
 import {
   GraphQLEmailAddress,
   GraphQLPhoneNumber,
   GraphQLURL,
 } from "graphql-scalars";
+import { Field, ObjectType } from "type-graphql";
 
-import { ObjectTracking } from "./metadata";
+import { withObjectTracking } from "../mixins";
 
 @ObjectType({
-  description: "A user",
+  description: "A details of the user",
 })
-export class User extends ObjectTracking {
-  @Field((type) => ID, {
-    description: "Unique ObjectId for partner",
-  })
-  public id: string;
-
+export class User extends withObjectTracking("User") {
   @Field({
     description: "Unique username for user",
   })
@@ -36,7 +31,7 @@ export class User extends ObjectTracking {
   })
   public profileImage: URL;
 
-  @Field((type) => GraphQLPhoneNumber, {
+  @Field(() => GraphQLPhoneNumber, {
     description: "PhoneNumber of the user",
     nullable: true,
   })

@@ -9,12 +9,12 @@ type Handler = (
  * A helper to register the cloud function and protect it from misuse
  */
 export const guard = (
-  method: string,
+  methods: string[],
   handler: Handler
 ): functions.HttpsFunction =>
   functions.https.onRequest((request, response) => {
     // Validate HTTP method
-    if (request.method !== method) {
+    if (!methods.includes(request.method)) {
       response.status(400).send("Invalid HTTP Method");
       return;
     }

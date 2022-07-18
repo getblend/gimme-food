@@ -3,7 +3,7 @@ import { db } from "../helpers/db";
 import { guard } from "../helpers/guard";
 import { BlendPost } from "../models/outputTypes";
 
-export const posts = guard("GET", async (request, response) => {
+export const posts = guard(["GET"], async (request, response) => {
   const query = db().collection("posts").orderBy("created_at", "desc");
   const connection = paginateFirestore<BlendPost>(
     query,

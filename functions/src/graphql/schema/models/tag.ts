@@ -1,16 +1,10 @@
-import { Field, ID, ObjectType } from "type-graphql";
-
-import { ObjectTracking } from "./metadata";
+import { Field, ObjectType } from "type-graphql";
+import { withObjectTracking } from "../mixins";
 
 @ObjectType({
   description: "A tag",
 })
-export class Tag extends ObjectTracking {
-  @Field((type) => ID, {
-    description: "Unique string for the tag",
-  })
-  public id: string;
-
+export class Tag extends withObjectTracking("Tag") {
   @Field({
     description: "Title of the tag",
   })

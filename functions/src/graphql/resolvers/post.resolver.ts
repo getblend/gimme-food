@@ -1,16 +1,17 @@
-import { Args, Query, Resolver } from "type-graphql";
-import { PostRepository } from "../repository/post.repository";
-import { PageInfoArgs } from "../schema/models/pagination";
-import { PostList } from "../schema/models/post";
+import { Args, Ctx, Query, Resolver } from "type-graphql";
+
+import { Context } from "../context";
+import { PageInfoArgs, PostCollection } from "../schema";
 
 @Resolver()
 export class PostResolver {
-  constructor(
-    private postsRespository: PostRepository = PostRepository.create()
-  ) {}
-
-  @Query((returns) => PostList)
-  posts(@Args() currentPage: PageInfoArgs): Promise<PostList> {
-    return this.postsRespository.getPosts(currentPage);
+  @Query(() => PostCollection, {
+    description: "Returns a list of posts based on the given pageInfo",
+  })
+  public posts(
+    @Args() currentPage: PageInfoArgs,
+    @Ctx() ctx: Context
+  ): Promise<PostCollection> {
+    return ctx.data.post.getPosts(currentPage);
   }
 }

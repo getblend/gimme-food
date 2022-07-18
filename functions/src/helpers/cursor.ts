@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
-import { PageInfo } from "../graphql/schema/models/pagination";
+
+import { PageInfo } from "../graphql/schema";
 
 // Converts the snapshot path to a base64 string
 const encodeCursor = (
@@ -26,7 +27,7 @@ export type Connection<T> = {
  * @param query The query to filter the results with
  * @param cursor The cursor from which position to get the information
  * @param limit The number of records to fetch, defaults to 11.
- * @returns The list of records paginated using cursors.
+ * @returns The collection of records paginated using cursors.
  */
 export async function paginateFirestore<T, TOutput = T>(
   query: admin.firestore.Query,
