@@ -10,10 +10,14 @@ function validateAPIKey(
   if (context.core.debugMode) return true;
 
   if (!context.core.env.blendApiKey) {
+    context.core.logger.error("Missing Blend API API Key in secrets");
     throw new AuthenticationError("No API Key was validated on the server");
   }
 
-  return apiKey === context.core.env.blendApiKey.toLowerCase();
+  return (
+    apiKey?.toString().toLowerCase() ===
+    context.core.env.blendApiKey.toLowerCase()
+  );
 }
 
 async function authenticateUser(
@@ -37,11 +41,15 @@ export const createAuthContext = async (
   const apiKey = req.headers["x-api-key"];
 
   if (!validateAPIKey(context, apiKey)) {
+    context.core.logger.error("Invalid API Key provided");
     throw new AuthenticationError("Invalid API Key was provided");
   }
 
   const user = await authenticateUser(token);
-  if (!user) throw new AuthenticationError("Could not authenticate user");
+  if (!user) {
+    context.core.logger.error("Unable to authenticate user");
+    throw new AuthenticationError("Could not authenticate user");
+  }
 
   return {
     user,

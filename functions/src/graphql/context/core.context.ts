@@ -22,6 +22,7 @@ const validateEnv = (
 const parseSecrets = (): Partial<CoreContext> => {
   const secrets = process.env;
   if (!validateEnv(secrets)) {
+    functions.logger.error("Missing environment variables");
     throw new Error(
       "Environment variables are set incorrectly or are missing."
     );
