@@ -4,7 +4,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": false,
     "outDir": "lib",
-    "sourceMap": false,
+    "sourceMap": true,
     "strict": true,
     "target": "ES2018",
     "resolveJsonModule": true,
@@ -12,6 +12,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
+    "noEmitHelpers": true,
+    "importHelpers": true,
     "lib": [
       "es2018",
       "esnext.asynciterable"

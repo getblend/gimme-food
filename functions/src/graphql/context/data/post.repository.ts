@@ -1,3 +1,5 @@
+import { Inject, Service } from "typedi";
+
 import { paginateFirestore } from "../../../helpers/cursor";
 import { make } from "../../../helpers/make";
 import { BlendPost } from "../../../models/outputTypes";
@@ -7,14 +9,16 @@ import {
   PostCollection,
   PostType,
 } from "../../schema";
-import { Context } from "../interface";
+import { CoreContext } from "../core.context";
 import { createUser } from "./user.repository";
 
+@Service()
 export class PostRepository {
-  constructor(private context: Context) {}
+  @Inject()
+  private coreContext: CoreContext;
 
   async getPosts(currentPage: PageInfoArgs): Promise<PostCollection> {
-    const query = this.context.core.db
+    const query = this.coreContext.db
       .collection("posts")
       .orderBy("created_at", "desc");
 
