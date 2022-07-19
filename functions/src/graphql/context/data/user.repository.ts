@@ -1,13 +1,17 @@
+import { Service, Inject } from "typedi";
+
 import { make } from "../../../helpers/make";
 import { BlendPost } from "../../../models/outputTypes";
 import { User } from "../../schema";
-import { Context } from "../interface";
+import { CoreContext } from "../core.context";
 
+@Service()
 export class UserRepository {
-  constructor(private context: Context) {}
+  @Inject()
+  coreContext: CoreContext;
 
   async find(id: string): Promise<User | undefined> {
-    const query = this.context.core.db.collection("users").doc(id);
+    const query = this.coreContext.db.collection("users").doc(id);
     const doc = await query.get();
     if (!doc.exists) {
       return undefined;
