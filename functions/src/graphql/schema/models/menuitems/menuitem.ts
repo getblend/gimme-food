@@ -14,7 +14,7 @@ export class MenuItem extends withObjectTracking("Item") {
   public name: string;
 
   @Field({
-    description: "description of the menuitem",
+    description: "Description of the menuitem",
   })
   public description: string;
 
