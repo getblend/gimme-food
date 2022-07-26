@@ -1,24 +1,19 @@
 import { Field, Int, ObjectType } from "type-graphql";
+import { withObjectTracking } from "../../mixins";
 
+
+
+// addongroupid and addonitemid  store to id like this (id=(addongroupid-addongroupid))
 
 @ObjectType({
   description: "A details of the addon",
 })
-export class Subitem {
+export class Addon extends withObjectTracking("Addon"){
+ 
   @Field({
-    description: "addongroupid of the addon",
+    description: "name of the addon",
   })
-  public addongroupid: string; 
-
-  @Field({
-    description: "addonitemid of the addon",
-  })
-  public addonitemid: string; 
-
-  @Field({
-    description: "description of the addon",
-  })
-  public description: string; 
+  public name: string; 
 
   @Field(()=>Int,{
     description: "price of the addon",

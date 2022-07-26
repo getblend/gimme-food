@@ -11,12 +11,12 @@ export const withObjectTracking = (tag: string) => {
     @Field({
       description: `Timestamp when the ${tag} was created`,
     })
-    public createdAt: Date;
+    public createdAt?: Date;
 
     @Field({
       description: `Timestamp when the ${tag} was updated`,
     })
-    public updatedAt: Date;
+    public updatedAt?: Date;
   }
 
   return ObjectTracking;

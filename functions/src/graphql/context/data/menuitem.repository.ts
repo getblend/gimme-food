@@ -21,15 +21,14 @@ export const menuItemDetails = (): MenuItem =>
         description:"description",
         price:100,
         store:store(),
-        instock:true,
+        inStock:true,
         foodType:"veg",
-        subitem:[
-            {  
-                addongroupid:"11121",
-                addonitemid:"22222",
-                description:"extra onion",
+        addon:[
+            {   
+                id:"1233",
+                name:"extra onion",
                 price:100,
-                status:true
+                status:true,
             }
         ],
         createdAt: new Date(),

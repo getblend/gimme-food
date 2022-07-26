@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { withObjectTracking } from "../../mixins";
 import { Store } from "../../models"
-import { Subitem } from "./subitem";
+import { Addon } from "./addon";
 
 @ObjectType({
   description: "A details of the item",
@@ -31,14 +31,14 @@ export class MenuItem extends withObjectTracking("Item") {
   @Field({
     description: "Instock of the menuitem",
   })
-  public instock: boolean;
+  public inStock: boolean;
 
   @Field({
     description: "FoodType of the menuitem",
   })
   public foodType: string;
 
-  @Field(() => [Subitem], { description: "Subitem of the item" })
-  public subitem: Subitem[];
+  @Field(() => [Addon], { description: "Addon of the item" })
+  public addon: Addon[];
 
 }
