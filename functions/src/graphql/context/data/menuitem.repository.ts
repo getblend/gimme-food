@@ -8,7 +8,7 @@ import { CoreContext } from "../core.context";
 export class MenuItemRepository {
     @Inject()
     coreContext: CoreContext;
-
+   
     async getMenuItem(): Promise<MenuItem | undefined> {
         return menuItemDetails();
     }
@@ -23,15 +23,15 @@ export const menuItemDetails = (): MenuItem =>
         store:store(),
         instock:true,
         foodType:"veg",
-        // addon:[
-        //     {
-        //         addongroupid:"11121",
-        //         addonitemid:"22222",
-        //         description:"extra onion",
-        //         price:100,
-        //         status:true
-        //     }
-        // ],
+        subitem:[
+            {  
+                addongroupid:"11121",
+                addonitemid:"22222",
+                description:"extra onion",
+                price:100,
+                status:true
+            }
+        ],
         createdAt: new Date(),
         updatedAt: new Date(),
     });

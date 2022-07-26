@@ -4,7 +4,7 @@ import { Field, Int, ObjectType } from "type-graphql";
 @ObjectType({
   description: "A details of the addon",
 })
-export class Addon {
+export class Subitem {
   @Field({
     description: "addongroupid of the addon",
   })
