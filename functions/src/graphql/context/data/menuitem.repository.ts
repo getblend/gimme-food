@@ -29,9 +29,19 @@ export const menuItemDetails = (): MenuItem =>
                 id:"1233",
                 name:"extra onion",
                 price:100,
-                status:true,
+                active:true,
             }
         ],
+        variation:{
+            id:"43211",
+            name:"full",
+            groupname:"quentity",
+            price:300,
+            active:true,
+            packingCharges:10,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
         createdAt: new Date(),
         updatedAt: new Date(),
     });
