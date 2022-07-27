@@ -42,6 +42,18 @@ export const menuItemDetails = (): MenuItem =>
             createdAt: new Date(),
             updatedAt: new Date(),
         },
+        tax:[
+           {
+            id:"1",
+            name:"SGST",
+            tax:5,
+           },
+           {
+            id:"2",
+            name:"cGST",
+            tax:5,
+           },
+        ],
         createdAt: new Date(),
         updatedAt: new Date(),
     });

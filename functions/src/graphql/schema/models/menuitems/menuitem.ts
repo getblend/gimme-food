@@ -2,6 +2,7 @@ import { Field, Int, ObjectType } from "type-graphql";
 import { withObjectTracking } from "../../mixins";
 import { Store } from "../../models"
 import { Addon } from "./addon";
+import { Taxes } from "./taxes";
 import { Variation } from "./variation";
 
 @ObjectType({
@@ -44,5 +45,8 @@ export class MenuItem extends withObjectTracking("Item") {
 
   @Field(() => Variation, { description: "Variation for the dish" })
   public variation: Variation;
+
+  @Field(() => [Taxes], { description: "Taxes for the dish" })
+  public tax: Taxes[];
 
 }
