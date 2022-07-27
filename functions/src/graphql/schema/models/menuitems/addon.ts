@@ -21,7 +21,7 @@ export class Addon extends withObjectTracking("Addon"){
   public price: number; 
 
   @Field({
-    description: "status of the addon",
+    description: "Active of the addon",
   })
-  public status: boolean; 
+  public active: boolean; 
 }
