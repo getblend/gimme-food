@@ -1,8 +1,9 @@
 import { Service, Inject } from "typedi";
 import { make } from "../../../helpers/make";
 import { MenuItem } from "../../schema";
-import {store} from "./store.repository"
+
 import { CoreContext } from "../core.context";
+import { store } from "./store.repository";
 
 @Service()
 export class MenuItemRepository {
@@ -22,7 +23,7 @@ export const menuItemDetails = (): MenuItem =>
         price:100,
         store:store(),
         inStock:true,
-        foodType:"veg",
+        dietaryPreference:"veg",
         addon:[
             {   
                 id:"1233",
