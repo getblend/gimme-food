@@ -1,10 +1,11 @@
+import { DateTime } from "graphql-scalars/mocks";
 import { Service, Inject } from "typedi";
 import { make } from "../../../helpers/make";
 import { Store } from "../../schema";
 import { CoreContext } from "../core.context";
 
 @Service()
-export class ItemRepository {
+export class StoreRepository {
     @Inject()
     coreContext: CoreContext;
 
@@ -32,21 +33,13 @@ export const store = (): Store =>
         },
         hours:[
             {
-                start: new Date(),
-                end:new Date(),
+                start: new DateTime(),
+                end: new DateTime(),
                 days:"sunday",
                 description:"string",
                 createdAt:new Date(),
                 updatedAt:new Date()
             },
-            {
-                start: new Date(),
-                end:new Date(),
-                days:"monday",
-                description:"string",
-                createdAt:new Date(),
-                updatedAt:new Date()
-            }
         ],
         distance: new Date(),
         deliveryTime:new Date(),
