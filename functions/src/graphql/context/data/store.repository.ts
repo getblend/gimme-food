@@ -33,8 +33,8 @@ export const store = (): Store =>
         },
         hours:[
             {
-                start: new DateTime(),
-                end: new DateTime(),
+                open: new DateTime(),
+                close: new DateTime(),
                 days:"sunday",
                 description:"string",
                 createdAt:new Date(),

@@ -1,19 +1,21 @@
 import { Field, ObjectType } from "type-graphql";
+import { GraphQLDateTime } from "graphql-scalars";
+import { withObjectTracking } from "../../mixins";
 
 @ObjectType({
     description: "A details of the StoreHours",
 })
-export class StoreHours {
+export class StoreHours extends withObjectTracking("StoreHours"){
 
-    @Field({
+    @Field(()=>GraphQLDateTime,{
         description: "Open time of the store",
     })
-    public start: Date;
+    public open: string;
 
-    @Field({
+    @Field(()=>GraphQLDateTime,{
         description: "End time of the store",
     })
-    public end: Date;
+    public close:string;
 
     @Field({
         description: "Days of the store",
@@ -24,14 +26,4 @@ export class StoreHours {
         description: "description of the storehours",
     })
     public description: string;
-
-    @Field({
-        description: `Timestamp when the Storehours was created`,
-      })
-      public createdAt: Date;
-  
-      @Field({
-        description: `Timestamp when the Storehours} was updated`,
-      })
-      public updatedAt: Date;
 }
