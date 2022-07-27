@@ -3,17 +3,17 @@ import { withObjectTracking } from "../../mixins";
 
 
 @ObjectType({
-  description: "A details of Texes",
+  description: "Tax Details",
 })
-export class Taxes extends withObjectTracking("Texes"){
+export class Taxes extends withObjectTracking("Tax"){
  
   @Field({
-    description: "Name of the Taxes",
+    description: "Type of Tax. E.g., SGST or CGST",
   })
   public name: string; 
 
   @Field(()=>Float,{
-    description: "Tax of the Taxes",
+    description: "Tax percentage. E.g., 5%, 8%, etc.,",
   })
   public tax: number; 
 }

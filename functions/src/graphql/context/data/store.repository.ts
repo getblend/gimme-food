@@ -1,4 +1,3 @@
-import { DateTime } from "graphql-scalars/mocks";
 import { Service, Inject } from "typedi";
 import { make } from "../../../helpers/make";
 import { Store } from "../../schema";
@@ -33,8 +32,9 @@ export const store = (): Store =>
         },
         hours:[
             {
-                open: new DateTime(),
-                close: new DateTime(),
+                id:"aaaaa",
+                // open: "12:30",
+                // close: "24:20",
                 days:"sunday",
                 description:"string",
                 createdAt:new Date(),

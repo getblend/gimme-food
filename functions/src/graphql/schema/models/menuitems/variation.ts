@@ -3,32 +3,32 @@ import { withObjectTracking } from "../../mixins";
 
 
 @ObjectType({
-  description: "A details of the variation",
+  description: "Details of the variation",
 })
 export class Variation extends withObjectTracking("Variation"){
  
   @Field({
-    description: "Name of the Variation",
+    description: "Name of the variation",
   })
   public name: string; 
 
   @Field({
-    description: "HroupName of the Variation",
+    description: "Category Name of the variation. E.g., variations can be grouped under 'Size', 'Quantity', etc.",
   })
   public groupname: string; 
 
   @Field(()=>Int,{
-    description: "Price of the Variation",
+    description: "New dish price due to variation",
   })
   public price: number; 
 
   @Field({
-    description: "Active of the Variation",
+    description: "Flag to indicate whether this variation is available for dish",
   })
   public active: boolean; 
 
   @Field(()=>Int,{
-    description: "PackingCharges of the Variation",
+    description: "Packing charges of the dish corresponding to its variation",
   })
   public packingCharges: number;  
 }

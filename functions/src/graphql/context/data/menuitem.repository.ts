@@ -50,7 +50,7 @@ export const menuItemDetails = (): MenuItem =>
            },
            {
             id:"2",
-            name:"cGST",
+            name:"CGST",
             tax:5,
            },
         ],

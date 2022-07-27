@@ -3,25 +3,27 @@ import { withObjectTracking } from "../../mixins";
 
 
 
-// addongroupid and addonitemid  store to id like this (id=(addongroupid-addongroupid))
+/* id is represented by the concatenation of addongroupid and addonitemid
+(which are mandatory fields for petpooja api-call) (id=(addongroupid-addongroupid))
+*/
 
 @ObjectType({
-  description: "A details of the addon",
+  description: "Details of the add-ons",
 })
-export class Addon extends withObjectTracking("Addon"){
+export class AddOn extends withObjectTracking("addOn"){
  
   @Field({
-    description: "name of the addon",
+    description: "Name of the add-on",
   })
   public name: string; 
 
   @Field(()=>Int,{
-    description: "price of the addon",
+    description: "Price of the add-on",
   })
   public price: number; 
 
   @Field({
-    description: "Active of the addon",
+    description: "Flag to indicate whether the add-on is available for the dish",
   })
   public active: boolean; 
 }

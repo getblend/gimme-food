@@ -1,14 +1,14 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { withObjectTracking } from "../../mixins";
+import { dietaryPreference, withObjectTracking } from "../../mixins";
 import { Store } from "../../models"
-import { Addon } from "./addon";
+import { AddOn } from "./addon";
 import { Taxes } from "./taxes";
 import { Variation } from "./variation";
 
 @ObjectType({
-  description: "A details of the item",
+  description: "Details and customizations of the dish",
 })
-export class MenuItem extends withObjectTracking("Item") {
+export class MenuItem extends withObjectTracking("MenuItem") {
   
   @Field({
     description: "Name of the dish",
@@ -26,27 +26,34 @@ export class MenuItem extends withObjectTracking("Item") {
   public price: number;
 
   @Field(() => Store, { 
-    description: "Store that contains dish" 
+    description: "Store that contains the dish" 
   })
   public store: Store;
 
+  @Field(()=>Int,{
+    description: "Packing charges associated with the particular dish",
+  })
+  public packingCharges: number;   
+
   @Field({
-    description: "InStock of the menuitem",
+    description: "Flag to indicate whether dish is in stock",
   })
   public inStock: boolean;
 
   @Field({
-    description: "DietaryPreference value of the dish",
+    description: "Dietary preference of the dish. E.g., veg/non-veg,gluten, etc.",
   })
-  public dietaryPreference: string;
+  public dietaryPreference:dietaryPreference
 
-  @Field(() => [Addon], { description: "Addons for the dish" })
-  public addon: Addon[];
+  @Field(() => [AddOn], { description: "Add-ons for the dish. E.g., toppings for a pizza - extra cheese, extra chicken, etc." })
+  public addOn: AddOn[];
 
-  @Field(() => Variation, { description: "Variation for the dish" })
+  @Field(() => Variation, { description: "Variation of the dish. E.g., a preparation of rice in different styles - Fried rice or boiled rice" })
   public variation: Variation;
 
-  @Field(() => [Taxes], { description: "Taxes for the dish" })
+  @Field(() => [Taxes], { description: "Taxes applied on the price of the dish" })
   public tax: Taxes[];
 
 }
+
+

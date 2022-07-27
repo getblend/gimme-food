@@ -8,7 +8,7 @@ import { Field, ObjectType } from "type-graphql";
 import { withObjectTracking } from "../mixins";
 
 @ObjectType({
-  description: "A details of the user",
+  description: "User Details",
 })
 export class User extends withObjectTracking("User") {
   @Field({

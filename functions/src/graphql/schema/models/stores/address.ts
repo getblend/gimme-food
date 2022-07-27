@@ -2,22 +2,22 @@ import { Field, ObjectType } from "type-graphql";
 import { GeoLocation } from "./geolocation";
 
 @ObjectType({
-    description: "A details of the Address",
+    description: "Address associated with the store",
 })
 export class Address {
 
     @Field({
-        description: "Building of the store",
+        description: "Building number of the store",
     })
     public building: string;
 
     @Field({
-        description: "Landmark of the store",
+        description: "Landmark near the store",
     })
     public landmark: string;
 
     @Field({
-        description: "Street of the store",
+        description: "Street name or street number of the store",
     })
     public street: string;
 
@@ -32,12 +32,12 @@ export class Address {
     public country: string;
 
     @Field({
-        description: "Postalcode of the store",
+        description: "Postal code of the store",
     })
     public postalCode: string;
 
     @Field(() => GeoLocation, { 
-        description: "Address of the store" 
+        description: "Lat and long coordinates of the store" 
       })
       public geoLocation: GeoLocation;
 }

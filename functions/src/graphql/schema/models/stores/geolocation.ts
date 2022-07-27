@@ -1,22 +1,22 @@
+import { GraphQLLatitude, GraphQLLongitude } from "graphql-scalars";
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType({
-    description: "A details of the GeoLocation",
+  description: "Geolocation of the store",
 })
 export class GeoLocation {
+  @Field(() => GraphQLLatitude, {
+    description: "Latitude of the store",
+  })
+  public latitude: number;
 
-    @Field({
-        description: "Latitude of the store",
-    })
-    public latitude: string;
+  @Field(() => GraphQLLongitude, {
+    description: "Longitude of the store",
+  })
+  public longitude: number;
 
-    @Field({
-        description: "Longitude of the store",
-    })
-    public longitude: string;
-
-    @Field({
-        description: "PlusCode of the store",
-    })
-    public plusCode: string;
+  @Field({
+    description: "Google Maps Plus code of the store",
+  })
+  public plusCode: string;
 }

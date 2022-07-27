@@ -1,35 +1,43 @@
-import { Field, ObjectType } from "type-graphql";
+import { GraphQLDateTime } from "graphql-scalars";
+import { Field, Float, ObjectType } from "type-graphql";
 import { withObjectTracking } from "../../mixins";
 import { Address } from "./address";
 import { StoreHours } from "./store.hours";
+import { MenuItem } from "../index";
 
 @ObjectType({
-  description: "A details of the Store",
+  description: "Details of the store. E.g. store name, store address, etc.,",
 })
 export class Store extends withObjectTracking("Store") {
-  
   @Field({
-    description: "name of the store",
+    description: "Name of the store",
   })
   public name: string;
 
-  @Field(() => Address, { 
-    description: "Address of the store" 
+  @Field(() => Address, {
+    description: "Address of the store",
   })
   public address: Address;
 
-  @Field(() => [StoreHours], { 
-    description: "Address of the store" 
+  @Field(() => [StoreHours], {
+    description:
+      "Timings and schedule of the open and close times of the store",
   })
   public hours: StoreHours[];
 
-  @Field({
-    description: "distance of the store",
+  @Field(() => Float, {
+    description: "Distance of the store from a user trying to access it",
   })
-  public distance: Date;
+  public distance: number;
 
-  @Field({
-    description: "deliveryTime of the store",
+  @Field(()=> GraphQLDateTime,{
+    description: "Approximate time taken to deliver food to a particular user",
   })
-  public deliveryTime: Date;
+  public deliveryTime: string;
+
+  @Field(() => [MenuItem], {
+    description:
+      "Collection of items that the store sells",
+  })
+  public menuItems: MenuItem[];
 }
