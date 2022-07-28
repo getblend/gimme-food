@@ -1,5 +1,5 @@
 import { Service, Inject } from "typedi";
-import { Args, Ctx, Query, Resolver } from "type-graphql";
+import { Args, Query, Resolver } from "type-graphql";
 
 import { PageInfoArgs, PostCollection } from "../schema";
 import { PostRepository } from "../context";
