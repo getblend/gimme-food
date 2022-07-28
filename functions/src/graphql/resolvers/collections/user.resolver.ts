@@ -1,8 +1,8 @@
 import { Service, Inject } from "typedi";
 import { Ctx, Query, Resolver } from "type-graphql";
 
-import { User } from "../schema";
-import { CoreContext, RequestContext, UserRepository } from "../context";
+import { User } from "../../schema";
+import { CoreContext, RequestContext, UserRepository } from "../../context";
 
 @Service()
 @Resolver()

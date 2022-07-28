@@ -5,7 +5,7 @@ import { withObjectTracking } from "../../mixins";
 @ObjectType({
   description: "Tax information for a menu item",
 })
-export class Taxes extends withObjectTracking("Tax") {
+export class Tax extends withObjectTracking("Tax") {
   @Field({
     description: "Type of Tax. E.g., SGST or CGST",
   })
@@ -14,5 +14,5 @@ export class Taxes extends withObjectTracking("Tax") {
   @Field(() => Float, {
     description: "Tax percentage. E.g., 5%, 8%, etc.,",
   })
-  public readonly tax: number;
+  public readonly percentage: number;
 }

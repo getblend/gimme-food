@@ -6,7 +6,7 @@ import {
 } from "type-graphql";
 
 import { withObjectTracking } from "../../mixins";
-import { Store } from "../stores/store";
+import { Store } from "../stores";
 import { User } from "../user";
 import { Cart } from "./cart";
 import { Tracking } from "./tracking";

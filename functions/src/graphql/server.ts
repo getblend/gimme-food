@@ -63,4 +63,11 @@ class GQLHandler {
 
 export const graphql = functions
   .region("asia-east1")
-  .https.onRequest((res, req) => Container.get(GQLHandler).handler(res, req));
+  .https.onRequest((req, res) => {
+    try {
+      Container.get(GQLHandler).handler(req, res);
+    } catch (error) {
+      functions.logger.error(error);
+      res.status(500).send(error);
+    }
+  });

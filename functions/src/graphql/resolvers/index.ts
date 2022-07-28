@@ -1,4 +1,9 @@
-import { PostResolver } from "./post.resolver";
-import { UserResolver } from "./user.resolver";
+import { PostsResolver } from "./collections/posts.resolver";
+import { UserResolver } from "./collections/user.resolver";
+import { ImagePostResolver } from "./objects/post.resolver";
 
-export const resolvers = [PostResolver, UserResolver] as const;
+export const resolvers = [
+  PostsResolver,
+  ImagePostResolver,
+  UserResolver,
+] as const;
