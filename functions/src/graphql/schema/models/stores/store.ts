@@ -1,6 +1,6 @@
 import { Field, ObjectType } from "type-graphql";
 
-import { withObjectTracking } from "../../mixins";
+import { withObjectTracking, withPagination } from "../../mixins";
 import { Address } from "./address";
 import { StoreHours } from "./storeHours";
 
@@ -23,3 +23,6 @@ export class Store extends withObjectTracking("Store") {
   })
   public readonly name: string;
 }
+
+@ObjectType({ description: "A collection of stores" })
+export class StoreCollection extends withPagination(Store) {}
