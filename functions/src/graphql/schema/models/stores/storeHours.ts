@@ -1,4 +1,9 @@
-import { Field, ObjectType, GraphQLISODateTime } from "type-graphql";
+import {
+  Field,
+  ObjectType,
+  GraphQLISODateTime,
+  registerEnumType,
+} from "type-graphql";
 
 import { withObjectTracking } from "../../mixins";
 
@@ -13,6 +18,11 @@ export enum StoreHoursScope {
   Saturday,
   Sunday,
 }
+
+registerEnumType(StoreHoursScope, {
+  description: "A enumeration of supported store hours scope windows",
+  name: "StoreHoursScope",
+});
 
 @ObjectType({
   description: "The working hours of a store",

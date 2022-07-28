@@ -10,8 +10,8 @@ export enum DietaryPreference {
 }
 
 registerEnumType(DietaryPreference, {
-  description: "A enumeration of supported dietary preferences", // this one is optional
-  name: "DietaryPreference", // this one is mandatory
+  description: "A enumeration of supported dietary preferences",
+  name: "DietaryPreference",
 });
 
 @ObjectType({

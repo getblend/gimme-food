@@ -1,8 +1,3 @@
-import {
-  GraphQLEmailAddress,
-  GraphQLPhoneNumber,
-  GraphQLURL,
-} from "graphql-scalars";
 import { Field, ObjectType } from "type-graphql";
 
 import { withObjectTracking } from "../mixins";
@@ -14,7 +9,7 @@ export class User extends withObjectTracking("User") {
   @Field({ description: "About the user", nullable: true })
   public bio?: string;
 
-  @Field(() => GraphQLEmailAddress, {
+  @Field({
     description: "EmailAddress of the user",
     nullable: true,
   })
@@ -26,13 +21,13 @@ export class User extends withObjectTracking("User") {
   @Field({ description: "Lastname of the user" })
   public lastName: string;
 
-  @Field(() => GraphQLPhoneNumber, {
+  @Field({
     description: "PhoneNumber of the user",
     nullable: true,
   })
   public phoneNumber: string;
 
-  @Field(() => GraphQLURL, {
+  @Field({
     description: "A url to the profile of the user",
     nullable: true,
   })

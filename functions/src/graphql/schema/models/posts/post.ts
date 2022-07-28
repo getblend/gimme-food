@@ -1,4 +1,3 @@
-import { GraphQLHSLA } from "graphql-scalars";
 import { Field, Int, ObjectType } from "type-graphql";
 
 import { withObjectTracking } from "../../mixins";
@@ -10,7 +9,7 @@ export abstract class AbstractPost extends withObjectTracking("Post") {
   @Field({ description: "Blurhash of the post" })
   public readonly blurHash: string;
 
-  @Field(() => GraphQLHSLA, {
+  @Field({
     description: "Dominant color in HSLA format",
   })
   public readonly color: string;
