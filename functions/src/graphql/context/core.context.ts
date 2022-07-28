@@ -11,9 +11,9 @@ export const DEBUG_MODE = new Token<boolean>("DEBUG_MODE");
 
 @Service()
 export class CoreContext {
-  readonly db: admin.firestore.Firestore;
+  public readonly db: admin.firestore.Firestore;
 
-  constructor() {
+  public constructor() {
     functions.logger.debug("Creating CoreContext");
     this.#parseSecrets();
 
@@ -21,9 +21,9 @@ export class CoreContext {
       admin.initializeApp({
         credential: admin.credential.cert({
           clientEmail: Container.get(BLEND_CLIENT_EMAIL),
+          privateKey: Container.get(BLEND_ADMIN_KEY).replace(/\\n/g, "\n"),
           projectId: Container.get(BLEND_PROJECT_ID),
           // replace `\` and `n` character pairs w/ single `\n` character
-          privateKey: Container.get(BLEND_ADMIN_KEY).replace(/\\n/g, "\n"),
         }),
         databaseURL: Container.get(DATABASE_URL),
       });
@@ -32,12 +32,12 @@ export class CoreContext {
     this.db = admin.firestore();
   }
 
-  get logger(): typeof functions.logger {
-    return functions.logger;
+  public get isDevelopment(): boolean {
+    return Container.get(DEBUG_MODE);
   }
 
-  get isDevelopment(): boolean {
-    return Container.get(DEBUG_MODE);
+  public get logger(): typeof functions.logger {
+    return functions.logger;
   }
 
   #parseSecrets(): void {
@@ -61,10 +61,10 @@ export class CoreContext {
   }
 
   #validateEnv(env: NodeJS.ProcessEnv): env is NodeJS.ProcessEnv & {
-    BLEND_CLIENT_EMAIL: string;
-    BLEND_PROJECT_ID: string;
     BLEND_ADMIN_KEY: string;
     BLEND_API_KEY: string;
+    BLEND_CLIENT_EMAIL: string;
+    BLEND_PROJECT_ID: string;
     DATABASE_URL: string;
   } {
     return !!(

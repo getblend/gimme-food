@@ -1,7 +1,8 @@
 import { paginateFirestore } from "../helpers/cursor";
 import { db } from "../helpers/db";
 import { guard } from "../helpers/guard";
-import { BlendPost } from "../models/outputTypes";
+
+import type { BlendPost } from "../legacy/outputTypes";
 
 export const posts = guard(["GET"], async (request, response) => {
   const query = db().collection("posts").orderBy("created_at", "desc");

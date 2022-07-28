@@ -14,8 +14,8 @@ export class UserResolver {
   private userRepository: UserRepository;
 
   @Query(() => User, {
-    nullable: true,
     description: "Returns the details of the current authenticated user",
+    nullable: true,
   })
   public async currentUser(
     @Ctx() context: RequestContext

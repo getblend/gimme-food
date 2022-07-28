@@ -1,53 +1,25 @@
-import { GraphQLDateTime, GraphQLURL } from "graphql-scalars";
-import { Field, Float, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
 import { Address } from "./address";
-import { StoreHours } from "./store.hours";
-import { MenuItem } from "../index";
-import { Coupon } from "../coupon";
+import { StoreHours } from "./storeHours";
 
 @ObjectType({
-  description: "Details of the store. E.g. store name, store address, etc.,",
+  description: "A details of the Store",
 })
 export class Store extends withObjectTracking("Store") {
-  @Field({
-    description: "Name of the store",
-  })
-  public name: string;
-
   @Field(() => Address, {
     description: "Address of the store",
   })
-  public address: Address;
-
-  @Field(() => GraphQLURL, {
-    description: "URL of the store image",
-  })
-  public storeImgURL: URL;
+  public readonly address: Address;
 
   @Field(() => [StoreHours], {
-    description:
-      "Timings and schedule of the open and close times of the store",
+    description: "The hours when the store is working",
   })
-  public hours: StoreHours[];
+  public readonly hours: StoreHours[];
 
-  @Field(() => Float, {
-    description: "Distance of the store from a user trying to access it",
+  @Field({
+    description: "Name of the store",
   })
-  public distance: number;
-
-  @Field(() => GraphQLDateTime, {
-    description: "Approximate time taken to deliver food to a particular user",
-  })
-  public deliveryTime: string;
-
-  @Field(() => [MenuItem], {
-    description: "Collection of items that the store sells",
-  })
-  public menuItems: MenuItem[];
-
-  @Field(() => [Coupon], {
-    description: "Collection of items that the store sells",
-  })
-  public coupon: Coupon[];
+  public readonly name: string;
 }

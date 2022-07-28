@@ -1,16 +1,17 @@
 import * as admin from "firebase-admin";
 
 import { PageInfo } from "../graphql/schema";
+import { make } from "./make";
 
 // Converts the snapshot path to a base64 string
 const encodeCursor = (
   snapshot:
     | admin.firestore.DocumentSnapshot
     | admin.firestore.QueryDocumentSnapshot
-) => Buffer.from(snapshot.ref.path).toString("base64");
+): string => Buffer.from(snapshot.ref.path).toString("base64");
 
 // Parses the snapshot path from a base64 string
-const decodeCursor = (cursor: string) =>
+const decodeCursor = (cursor: string): string =>
   Buffer.from(cursor, "base64").toString("utf8");
 
 /**
@@ -32,7 +33,7 @@ export type Connection<T> = {
 export async function paginateFirestore<T, TOutput = T>(
   query: admin.firestore.Query,
   cursor: string | null = null,
-  limit: number = 11,
+  limit = 11,
   creator: (data: T) => TOutput
 ): Promise<Connection<TOutput>> {
   // get one more item for hasNextPage
@@ -60,11 +61,12 @@ export async function paginateFirestore<T, TOutput = T>(
 
   const data = snapshot.docs.map((doc) => creator(doc.data() as T));
 
-  const pageInfo = new PageInfo();
-  pageInfo.endCursor = endCursor;
-  pageInfo.hasNextPage = hasNextPage;
-  pageInfo.hasPreviousPage = false;
-  pageInfo.startCursor = undefined;
+  const pageInfo = make(PageInfo, {
+    endCursor,
+    hasNextPage,
+    hasPreviousPage: false,
+    startCursor: undefined,
+  });
 
   return {
     nodes: data,

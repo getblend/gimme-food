@@ -1,59 +1,101 @@
 import { ArgsType, Field, Int, ObjectType } from "type-graphql";
 
+import type { ClassType } from "type-graphql";
+
 @ArgsType()
 export class PageInfoArgs {
-  @Field({ nullable: true })
-  before?: string;
+  @Field({
+    description: "The cursor after which to load the data from",
+    nullable: true,
+  })
+  public readonly after?: string;
 
-  @Field({ nullable: true })
-  after?: string;
+  @Field({
+    description: "The cursor before which to load the data from",
+    nullable: true,
+  })
+  public readonly before?: string;
 
-  @Field(() => Int, { nullable: true })
-  first?: number;
+  @Field(() => Int, {
+    description: "The number of items to load after the cursor",
+    nullable: true,
+  })
+  public readonly first?: number;
 
-  @Field(() => Int, { nullable: true })
-  last?: number;
+  @Field(() => Int, {
+    description: "The number of items to load before the cursor",
+    nullable: true,
+  })
+  public readonly last?: number;
 }
 
-@ObjectType({ isAbstract: true })
+@ObjectType({
+  description: "The pagination cursor information for a page",
+})
 export class PageInfo {
   @Field({
-    description: "field for startCursor",
+    description: "The cursor that returns the next page of results",
     nullable: true,
   })
-  public startCursor?: string;
+  public readonly endCursor?: string;
 
   @Field({
-    description: "field for endCursor",
+    description: "Indicates if there are more items after the cursor",
+  })
+  public readonly hasNextPage: boolean;
+
+  @Field({
+    description: "Indicates if there are more items before the cursor",
+  })
+  public readonly hasPreviousPage: boolean;
+
+  @Field({
+    description: "The cursor that returns the previous page of results",
     nullable: true,
   })
-  public endCursor?: string;
-
-  @Field({
-    description: "field for hasNextPage",
-  })
-  public hasNextPage: boolean;
-
-  @Field({
-    description: "field for hasPreviousPage",
-  })
-  public hasPreviousPage: boolean;
+  public readonly startCursor?: string;
 }
 
-export function withPagination<TClassType>(BaseClass: TClassType) {
+/**
+ * Extends a class to add support for pagination.
+ * @param BaseClass The class to extend
+ * @returns The base class with the additional properties
+ */
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types
+export function withPagination<TClass>(BaseClass: TClass) {
   @ObjectType({ isAbstract: true })
   abstract class PaginatedResponse {
+    @Field(() => Int, {
+      description: "The number of items returned in the current page",
+    })
+    public readonly count: number;
+
+    // @Field(() => ID, {
+    //   description: "A cursor pointing to the information on this page",
+    //   nullable: true,
+    // })
+    // public readonly id: string;
+
     // here we use the runtime argument
-    @Field(() => [BaseClass])
+    @Field(() => [BaseClass], {
+      description: `A list of ${
+        (BaseClass as unknown as ClassType).name
+      } items`,
+    })
     // and here the generic type
-    nodes: TClassType[];
+    public readonly nodes: TClass[];
 
-    @Field(() => PageInfo)
+    @Field(() => PageInfo, {
+      description:
+        "Details on how to get the next or previous items in the collection",
+    })
     // and here the generic type
-    pageInfo: PageInfo;
+    public readonly pageInfo: PageInfo;
 
-    @Field(() => Int)
-    total: number;
+    @Field(() => Int, {
+      description: "The total number of items in the collection",
+    })
+    public readonly total: number;
   }
 
   return PaginatedResponse;

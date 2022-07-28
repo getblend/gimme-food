@@ -1,22 +1,22 @@
 interface Urls {
-  raw: string;
   full: string;
+  raw: string;
   regular: string;
   small: string;
-  thumb: string;
   small_s3: string;
+  thumb: string;
 }
 
 interface Links {
-  self: string;
-  html: string;
   download: string;
   download_location: string;
+  html: string;
+  self: string;
 }
 
 interface FoodDrink {
-  status: string;
   approved_on: Date;
+  status: string;
 }
 
 interface TopicSubmissions {
@@ -24,74 +24,74 @@ interface TopicSubmissions {
 }
 
 interface Links2 {
-  self: string;
-  html: string;
-  photos: string;
-  likes: string;
-  portfolio: string;
-  following: string;
   followers: string;
+  following: string;
+  html: string;
+  likes: string;
+  photos: string;
+  portfolio: string;
+  self: string;
 }
 
 interface ProfileImage {
-  small: string;
-  medium: string;
   large: string;
+  medium: string;
+  small: string;
 }
 
 interface Social {
   instagram_username: string;
+  paypal_email?: any;
   portfolio_url: string;
   twitter_username?: any;
-  paypal_email?: any;
 }
 
 interface User {
-  id: string;
-  updated_at: Date;
-  username: string;
-  name: string;
-  first_name: string;
-  last_name: string;
-  twitter_username?: any;
-  portfolio_url: string;
+  accepted_tos: boolean;
   bio: string;
-  location: string;
-  links: Links2;
-  profile_image: ProfileImage;
+  first_name: string;
+  for_hire: boolean;
+  id: string;
   instagram_username: string;
+  last_name: string;
+  links: Links2;
+  location: string;
+  name: string;
+  portfolio_url: string;
+  profile_image: ProfileImage;
+  social: Social;
   total_collections: number;
   total_likes: number;
   total_photos: number;
-  accepted_tos: boolean;
-  for_hire: boolean;
-  social: Social;
+  twitter_username?: any;
+  updated_at: Date;
+  username: string;
 }
 
 interface Type {
-  slug: string;
   pretty_slug: string;
+  slug: string;
 }
 
 interface Category {
-  slug: string;
   pretty_slug: string;
+  slug: string;
 }
 
 interface Subcategory {
-  slug: string;
   pretty_slug: string;
+  slug: string;
 }
 
 interface Ancestry {
-  type: Type;
   category: Category;
   subcategory: Subcategory;
+  type: Type;
 }
 
 interface Health {
-  status: string;
   approved_on: Date;
+  status: string;
 }
 
 interface TopicSubmissions2 {
@@ -99,62 +99,62 @@ interface TopicSubmissions2 {
 }
 
 export interface CoverPhoto {
-  id: string;
-  created_at: Date;
-  updated_at: Date;
-  promoted_at: Date;
-  width: number;
-  height: number;
-  color: string;
-  blur_hash: string;
-  description: string;
   alt_description: string;
-  urls: Urls;
-  links: Links;
+  blur_hash: string;
   categories: any[];
-  likes: number;
-  liked_by_user: boolean;
+  color: string;
+  created_at: Date;
   current_user_collections: any[];
+  description: string;
+  height: number;
+  id: string;
+  liked_by_user: boolean;
+  likes: number;
+  links: Links;
+  promoted_at: Date;
   sponsorship?: any;
   topic_submissions: TopicSubmissions2;
+  updated_at: Date;
+  urls: Urls;
   user: User;
+  width: number;
 }
 
 interface Source {
   ancestry: Ancestry;
-  title: string;
-  subtitle: string;
-  description: string;
-  meta_title: string;
-  meta_description: string;
   cover_photo: CoverPhoto;
+  description: string;
+  meta_description: string;
+  meta_title: string;
+  subtitle: string;
+  title: string;
 }
 
 interface Tag {
-  type: string;
-  title: string;
   source?: Source;
+  title: string;
+  type: string;
 }
 
 export interface Post {
-  id: string;
-  created_at: Date;
-  updated_at: Date;
-  promoted_at: Date;
-  width: number;
-  height: number;
-  color: string;
-  blur_hash: string;
-  description: string;
   alt_description: string;
-  urls: Urls;
-  links: Links;
+  blur_hash: string;
   categories: any[];
-  likes: number;
-  liked_by_user: boolean;
+  color: string;
+  created_at: Date;
   current_user_collections: any[];
+  description: string;
+  height: number;
+  id: string;
+  liked_by_user: boolean;
+  likes: number;
+  links: Links;
+  promoted_at: Date;
   sponsorship?: any;
-  topic_submissions: TopicSubmissions;
-  user: User;
   tags: Tag[];
+  topic_submissions: TopicSubmissions;
+  updated_at: Date;
+  urls: Urls;
+  user: User;
+  width: number;
 }

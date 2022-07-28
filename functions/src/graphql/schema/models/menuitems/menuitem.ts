@@ -1,59 +1,53 @@
-import { Field, Int, ObjectType } from "type-graphql";
-import { dietaryPreference, withObjectTracking } from "../../mixins";
-import { Store } from "../../models"
-import { AddOn } from "./addon";
-import { Taxes } from "./taxes";
-import { Variation } from "./variation";
+import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
 
-@ObjectType({
-  description: "Details and customizations of the dish",
-})
-export class MenuItem extends withObjectTracking("MenuItem") {
-  
-  @Field({
-    description: "Name of the dish",
-  })
-  public name: string;
+import { withObjectTracking } from "../../mixins";
+import { Store } from "../stores/store";
+import { AddOn } from "./addOn";
 
-  @Field({
-    description: "Description of the dish",
-  })
-  public description: string;
-
-  @Field(() => Int, {
-    description: "Price of the dish",
-  })
-  public price: number;
-
-  @Field(() => Store, { 
-    description: "Store that contains the dish" 
-  })
-  public store: Store;
-
-  @Field(()=>Int,{
-    description: "Packing charges associated with the particular dish",
-  })
-  public packingCharges: number;   
-
-  @Field({
-    description: "Flag to indicate whether dish is in stock",
-  })
-  public inStock: boolean;
-
-  @Field({
-    description: "Dietary preference of the dish. E.g., veg/non-veg,gluten, etc.",
-  })
-  public dietaryPreference:dietaryPreference
-
-  @Field(() => [AddOn], { description: "Add-ons for the dish. E.g., toppings for a pizza - extra cheese, extra chicken, etc." })
-  public addOn: AddOn[];
-
-  @Field(() => Variation, { description: "Variation of the dish. E.g., a preparation of rice in different styles - Fried rice or boiled rice" })
-  public variation: Variation;
-
-  @Field(() => [Taxes], { description: "Taxes applied on the price of the dish" })
-  public tax: Taxes[];
-
+export enum DietaryPreference {
+  Vegetarian = "veg",
+  NonVegetarian = "nonveg",
 }
 
+registerEnumType(DietaryPreference, {
+  description: "A enumeration of supported dietary preferences",
+  name: "DietaryPreference",
+});
 
+@ObjectType({
+  description: "An item on the menu available in a store",
+})
+export class MenuItem extends withObjectTracking("MenuItem") {
+  @Field(() => [AddOn], { description: "Add ons available for this menu item" })
+  public readonly addons: AddOn[];
+
+  @Field({
+    description: "Description of the menu item",
+  })
+  public readonly description: string;
+
+  @Field(() => [DietaryPreference], {
+    description: "Suppported dietary preference of the menu item",
+  })
+  public readonly dietaryPreferences: DietaryPreference[];
+
+  @Field({
+    description: "Describes whether this menu item is available or not",
+  })
+  public readonly isInStock: boolean;
+
+  @Field({
+    description: "Name of the menu item",
+  })
+  public readonly name: string;
+
+  @Field(() => Float, {
+    description: "Price of the menu item",
+  })
+  public readonly price: number;
+
+  @Field(() => Store, {
+    description: "The store that this menu item belongs to",
+  })
+  public readonly store: Store;
+}

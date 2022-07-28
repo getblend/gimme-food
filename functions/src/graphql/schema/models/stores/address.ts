@@ -1,43 +1,44 @@
 import { Field, ObjectType } from "type-graphql";
+
 import { GeoLocation } from "./geolocation";
 
 @ObjectType({
-    description: "Address associated with the store",
+  description: "A details of an address",
 })
 export class Address {
+  @Field({
+    description: "The building number or name",
+  })
+  public readonly building: string;
 
-    @Field({
-        description: "Building number of the store",
-    })
-    public building: string;
+  @Field({
+    description: "The city where the address is located",
+  })
+  public readonly city: string;
 
-    @Field({
-        description: "Landmark near the store",
-    })
-    public landmark: string;
+  @Field({
+    description: "The country where the city is located",
+  })
+  public readonly country: string;
 
-    @Field({
-        description: "Street name or street number of the store",
-    })
-    public street: string;
+  @Field(() => GeoLocation, {
+    description: "A pointer to the location of the address",
+  })
+  public readonly geoLocation: GeoLocation;
 
-    @Field({
-        description: "City of the store",
-    })
-    public city: string;
+  @Field({
+    description: "A landmark near the address",
+    nullable: true,
+  })
+  public readonly landmark?: string;
 
-    @Field({
-        description: "Country of the store",
-    })
-    public country: string;
+  @Field({
+    description: "The postal code of the address",
+  })
+  public readonly postalCode: string;
 
-    @Field({
-        description: "Postal code of the store",
-    })
-    public postalCode: string;
-
-    @Field(() => GeoLocation, { 
-        description: "Lat and long coordinates of the store" 
-      })
-      public geoLocation: GeoLocation;
+  @Field({
+    description: "The street name of the address",
+  })
+  public readonly street: string;
 }

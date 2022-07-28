@@ -1,29 +1,23 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
 
-
-
-/* id is represented by the concatenation of addongroupid and addonitemid
-(which are mandatory fields for petpooja api-call) (id=(addongroupid-addongroupid))
-*/
-
 @ObjectType({
-  description: "Details of the add-ons",
+  description: "A topping that can be added onto a menu item",
 })
-export class AddOn extends withObjectTracking("addOn"){
- 
+export class AddOn extends withObjectTracking("AddOn") {
   @Field({
-    description: "Name of the add-on",
+    description: "Checks if the add on is available",
   })
-  public name: string; 
-
-  @Field(()=>Int,{
-    description: "Price of the add-on",
-  })
-  public price: number; 
+  public readonly isInStock: boolean;
 
   @Field({
-    description: "Flag to indicate whether the add-on is available for the dish",
+    description: "Name of the add on",
   })
-  public active: boolean; 
+  public readonly name: string;
+
+  @Field(() => Float, {
+    description: "Price of the add on",
+  })
+  public readonly price: number;
 }

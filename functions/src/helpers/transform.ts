@@ -1,5 +1,5 @@
-import { Post } from "../models/inputTypes";
-import { BlendPost } from "../models/outputTypes";
+import type { Post } from "../legacy/inputTypes";
+import type { BlendPost } from "../legacy/outputTypes";
 
 export const transformPosts = (posts: Post[] = []): BlendPost[] =>
   posts.map(transformPost);
@@ -29,9 +29,9 @@ const transformTags = (tags: Post["tags"] = []): BlendPost["tags"] =>
     if (!tag.source) return acc;
 
     const simpleTag: BlendPost["tags"][0] = {
-      unique: tag.title,
-      title: tag.source.title,
       description: tag.source.description,
+      title: tag.source.title,
+      unique: tag.title,
     };
 
     acc.push(simpleTag);
