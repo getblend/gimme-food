@@ -1,44 +1,53 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
-import { Store } from "../../models"
-import { Addon } from "./addon";
+import { Store } from "../stores/store";
+import { AddOn } from "./addOn";
+
+export enum DietaryPreference {
+  Vegetarian = "veg",
+  NonVegetarian = "nonveg",
+}
+
+registerEnumType(DietaryPreference, {
+  description: "A enumeration of supported dietary preferences", // this one is optional
+  name: "DietaryPreference", // this one is mandatory
+});
 
 @ObjectType({
-  description: "A details of the item",
+  description: "An item on the menu available in a store",
 })
-export class MenuItem extends withObjectTracking("Item") {
-  
-  @Field({
-    description: "Name of the menuitem",
-  })
-  public name: string;
+export class MenuItem extends withObjectTracking("MenuItem") {
+  @Field(() => [AddOn], { description: "Add ons available for this menu item" })
+  public readonly addons: AddOn[];
 
   @Field({
-    description: "description of the menuitem",
+    description: "Description of the menu item",
   })
-  public description: string;
+  public readonly description: string;
 
-  @Field(() => Int, {
-    description: "Price of the menuitem",
+  @Field(() => [DietaryPreference], {
+    description: "Suppported dietary preference of the menu item",
   })
-  public price: number;
-
-  @Field(() => Store, { 
-    description: "Store of the menuitem" 
-  })
-  public store: Store;
+  public readonly dietaryPreferences: DietaryPreference[];
 
   @Field({
-    description: "Instock of the menuitem",
+    description: "Describes whether this menu item is available or not",
   })
-  public inStock: boolean;
+  public readonly isInStock: boolean;
 
   @Field({
-    description: "FoodType of the menuitem",
+    description: "Name of the menu item",
   })
-  public foodType: string;
+  public readonly name: string;
 
-  @Field(() => [Addon], { description: "Addon of the item" })
-  public addon: Addon[];
+  @Field(() => Float, {
+    description: "Price of the menu item",
+  })
+  public readonly price: number;
 
+  @Field(() => Store, {
+    description: "The store that this menu item belongs to",
+  })
+  public readonly store: Store;
 }

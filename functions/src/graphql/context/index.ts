@@ -1,5 +1,6 @@
 import type { ExpressContext } from "apollo-server-express";
-import { AuthenticatedUser } from "./data/auth.repository";
+
+import type { AuthenticatedUser } from "./data/auth.repository";
 
 export { CoreContext } from "./core.context";
 export * from "./data";

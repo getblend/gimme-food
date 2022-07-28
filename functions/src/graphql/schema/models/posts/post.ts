@@ -6,30 +6,33 @@ import { Tag } from "../tag";
 import { User } from "../user";
 
 @ObjectType({ isAbstract: true })
-export class Post extends withObjectTracking("Post") {
-  @Field({
-    description: "Title of the post",
-    nullable: true,
-  })
-  public title?: string;
-
-  @Field({ description: "Description for the post", nullable: true })
-  public description?: string;
-
-  @Field(() => User, { description: "Creator of the post" })
-  public creator: User;
-
-  @Field(() => [Tag], { description: "Tags the post" })
-  public tags: Tag[];
+export abstract class AbstractPost extends withObjectTracking("Post") {
+  @Field({ description: "Blurhash of the post" })
+  public readonly blurHash: string;
 
   @Field(() => GraphQLHSLA, {
     description: "Dominant color in HSLA format",
   })
-  public color: string;
+  public readonly color: string;
 
-  @Field({ description: "Blurhash of the post" })
-  public blurHash: string;
+  @Field(() => User, { description: "Creator of the post" })
+  public readonly creator: User;
+
+  @Field({
+    description: "Description for the post",
+    nullable: true,
+  })
+  public readonly description?: string;
 
   @Field(() => Int, { description: "The total number of likes on the post" })
-  public likes: number;
+  public readonly likes: number;
+
+  @Field(() => [Tag], { description: "Tags the post" })
+  public readonly tags: Tag[];
+
+  @Field({
+    description: "Title of the post",
+    nullable: true,
+  })
+  public readonly title?: string;
 }

@@ -1,27 +1,23 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
 
-
-
-// addongroupid and addonitemid  store to id like this (id=(addongroupid-addongroupid))
-
 @ObjectType({
-  description: "A details of the addon",
+  description: "A topping that can be added onto a menu item",
 })
-export class Addon extends withObjectTracking("Addon"){
- 
+export class AddOn extends withObjectTracking("AddOn") {
   @Field({
-    description: "name of the addon",
+    description: "Checks if the add on is available",
   })
-  public name: string; 
-
-  @Field(()=>Int,{
-    description: "price of the addon",
-  })
-  public price: number; 
+  public readonly isInStock: boolean;
 
   @Field({
-    description: "status of the addon",
+    description: "Name of the add on",
   })
-  public status: boolean; 
+  public readonly name: string;
+
+  @Field(() => Float, {
+    description: "Price of the add on",
+  })
+  public readonly price: number;
 }

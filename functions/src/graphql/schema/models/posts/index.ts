@@ -1,9 +1,10 @@
 import { createUnionType, ObjectType } from "type-graphql";
-import { withPagination } from "../../mixins";
 
+import { withPagination } from "../../mixins";
 import { ImagePost } from "./image.post";
 
 export const PostType = createUnionType({
+  description: "A union of the various supported post types",
   name: "PostType",
   types: () => [ImagePost] as const,
 });

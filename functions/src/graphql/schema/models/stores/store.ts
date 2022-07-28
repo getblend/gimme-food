@@ -1,35 +1,25 @@
 import { Field, ObjectType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
 import { Address } from "./address";
-import { StoreHours } from "./store.hours";
+import { StoreHours } from "./storeHours";
 
 @ObjectType({
   description: "A details of the Store",
 })
 export class Store extends withObjectTracking("Store") {
-  
-  @Field({
-    description: "name of the store",
+  @Field(() => Address, {
+    description: "Address of the store",
   })
-  public name: string;
+  public readonly address: Address;
 
-  @Field(() => Address, { 
-    description: "Address of the store" 
+  @Field(() => [StoreHours], {
+    description: "The hours when the store is working",
   })
-  public address: Address;
-
-  @Field(() => [StoreHours], { 
-    description: "Address of the store" 
-  })
-  public hours: StoreHours[];
+  public readonly hours: StoreHours[];
 
   @Field({
-    description: "distance of the store",
+    description: "Name of the store",
   })
-  public distance: Date;
-
-  @Field({
-    description: "deliveryTime of the store",
-  })
-  public deliveryTime: Date;
+  public readonly name: string;
 }

@@ -11,10 +11,14 @@ import { withObjectTracking } from "../mixins";
   description: "A details of the user",
 })
 export class User extends withObjectTracking("User") {
-  @Field({
-    description: "Unique username for user",
+  @Field({ description: "About the user", nullable: true })
+  public bio?: string;
+
+  @Field(() => GraphQLEmailAddress, {
+    description: "EmailAddress of the user",
+    nullable: true,
   })
-  public userName: string;
+  public email: string;
 
   @Field({ description: "Firstname of the user" })
   public firstName: string;
@@ -22,24 +26,20 @@ export class User extends withObjectTracking("User") {
   @Field({ description: "Lastname of the user" })
   public lastName: string;
 
-  @Field({ description: "About the user", nullable: true })
-  public bio?: string;
-
-  @Field(() => GraphQLURL, {
-    description: "A url to the profile of the user",
-    nullable: true,
-  })
-  public profileImage: URL;
-
   @Field(() => GraphQLPhoneNumber, {
     description: "PhoneNumber of the user",
     nullable: true,
   })
   public phoneNumber: string;
 
-  @Field((type) => GraphQLEmailAddress, {
-    description: "EmailAddress of the user",
+  @Field(() => GraphQLURL, {
+    description: "A url to the profile of the user",
     nullable: true,
   })
-  public email: string;
+  public profileImage: string;
+
+  @Field({
+    description: "Unique username for user",
+  })
+  public userName: string;
 }

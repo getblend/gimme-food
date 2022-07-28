@@ -1,6 +1,6 @@
-import { ClassType } from "type-graphql";
+import type { ClassType } from "type-graphql";
 
-export const make = <Type extends ClassType>(
-  factory: Type,
-  properties: InstanceType<Type>
-): InstanceType<Type> => Object.assign(new factory(), properties);
+export const make = <TType extends ClassType>(
+  factory: TType,
+  properties: InstanceType<TType>
+): InstanceType<TType> => Object.assign(new factory(), properties);

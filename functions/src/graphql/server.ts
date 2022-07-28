@@ -1,28 +1,27 @@
-import { Inject, Service, Container } from "typedi";
 import { ApolloServer } from "apollo-server-cloud-functions";
-import type { PluginDefinition } from "apollo-server-core";
-import * as functions from "firebase-functions";
 import { buildSchemaSync } from "type-graphql";
+import { Inject, Service, Container } from "typedi";
+import * as functions from "firebase-functions";
 
-import { AuthRepository, CoreContext, RequestContext } from "./context";
-
+import { AuthRepository, CoreContext } from "./context";
 import { resolvers } from "./resolvers";
 
-let _graphqlHandler: functions.HttpsFunction;
+import type { RequestContext } from "./context";
+import type { PluginDefinition } from "apollo-server-core";
 
 @Service()
 class GQLHandler {
-  @Inject() public coreContext: CoreContext;
-  @Inject() public authRepository: AuthRepository;
+  @Inject() public readonly authRepository: AuthRepository;
+  @Inject() public readonly coreContext: CoreContext;
 
-  readonly handler: functions.HttpsFunction;
+  public readonly handler: functions.HttpsFunction;
 
-  constructor() {
+  public constructor() {
     functions.logger.debug("Creating GraphQL handler");
 
     const schema = buildSchemaSync({
-      resolvers,
       container: Container,
+      resolvers,
     });
 
     const loggingPlugin: PluginDefinition = {
@@ -35,7 +34,7 @@ class GQLHandler {
         );
 
         return {
-          async didEncounterErrors(errors) {
+          async didEncounterErrors(errors): Promise<void> {
             functions.logger.error("[GQL] Error", errors);
           },
         };
@@ -43,22 +42,22 @@ class GQLHandler {
     };
 
     const server = new ApolloServer({
-      schema,
-      csrfPrevention: true,
+      allowBatchedHttpRequests: true,
       cache: "bounded",
       context: async ({ req, res }): Promise<RequestContext> => ({
         req,
         res,
         user: await this.authRepository.authenticate(req),
       }),
-      allowBatchedHttpRequests: true,
+      csrfPrevention: true,
       debug: true,
-      plugins: [loggingPlugin],
-      logger: functions.logger,
       introspection: true,
+      logger: functions.logger,
+      plugins: [loggingPlugin],
+      schema,
     });
 
-    this.handler = server.createHandler() as any;
+    this.handler = server.createHandler() as unknown as functions.HttpsFunction;
   }
 }
 

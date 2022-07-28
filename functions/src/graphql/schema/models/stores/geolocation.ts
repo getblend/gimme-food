@@ -1,22 +1,21 @@
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType({
-    description: "A details of the GeoLocation",
+  description: "A details of the GeoLocation",
 })
 export class GeoLocation {
+  @Field({
+    description: "The latitude of the location",
+  })
+  public readonly latitude: string;
 
-    @Field({
-        description: "Latitude of the store",
-    })
-    public latitude: string;
+  @Field({
+    description: "The longitude of the location",
+  })
+  public readonly longitude: string;
 
-    @Field({
-        description: "Longitude of the store",
-    })
-    public longitude: string;
-
-    @Field({
-        description: "PlusCode of the store",
-    })
-    public plusCode: string;
+  @Field({
+    description: "The plus code associated with the location",
+  })
+  public readonly plusCode: string;
 }
