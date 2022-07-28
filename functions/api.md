@@ -1,3 +1,5 @@
+## API Requirements for initial POC
+
 | #   | type         | name                                         | returns            | description                                                    |
 | --- | ------------ | -------------------------------------------- | ------------------ | -------------------------------------------------------------- |
 | 1   | query        | posts                                        | PostCollection     | returns the list of posts                                      |
@@ -8,6 +10,7 @@
 | 5   | query        | store                                        | Store              | returns a single store                                         |
 | 5.1 | field        | - deliveryTime(location: GeoLocation)        | ISODateTime        | returns the delivery time based on the location from the store |
 | 5.2 | field        | - menu(pageArgs: PaginationArgs)             | MenuItemCollection | returns a list of menuItems for the specific store             |
+| 5.3 | field        | - summary                                    | StoreSummary       | returns a summary of the store contents                        |
 | 6   | query        | orders                                       | OrderCollection    | returns a collection of orders                                 |
 | 7   | query        | order                                        | Order              | return a single order                                          |
 | 8   | query        | cart                                         | Cart               | return the cart for the user                                   |
@@ -25,3 +28,5 @@
 | 20  | mutation     | deleteUser(input: DeleteUserInput)           | void               | deletes all user data from the system                          |
 | --  | --           | -                                            | --                 | -                                                              |
 | 21  | subscription | trackingStatus(orderId: ID)                  | OrderDelta         | returns the information that has changed on the order          |
+
+## API Addtionals
