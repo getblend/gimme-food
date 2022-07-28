@@ -1,38 +1,24 @@
-import { GraphQLLatitude, GraphQLLongitude, GraphQLPhoneNumber } from "graphql-scalars";
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
+
+import { withObjectTracking } from "../../mixins";
+import { GeoLocation } from "../stores/geolocation";
 
 @ObjectType({
   description: "Tracking state of the order item",
 })
-export class Tracking {
+export class Tracking extends withObjectTracking("Tracking") {
+  @Field({
+    description: "Name of the agent",
+  })
+  public readonly agentName: string;
 
   @Field({
-    description: "Name of the runner",
+    description: "Phone number of the agent",
   })
-  public runnerName: string;
-
-  @Field(()=>GraphQLPhoneNumber,{
-    description: "Phone number of the runner",
-  })
-  public runnerPhoneNumber: string;
+  public readonly agentPhoneNumber: string;
 
   @Field({
-    description: "State that indicates whether the rider on his way pickup or drop off",
+    description: "Location of the agent",
   })
-  public state: string;
-
-  @Field(() => GraphQLLatitude, {
-    description: "Latitude of the runner",
-  })
-  public latitude: number;
-
-  @Field(() => GraphQLLongitude, {
-    description: "Longitude of the runner",
-  })
-  public longitude: number;
-
-  @Field({
-    description:"Timestamp when order was sucessfully delivered",
-  })
-  public deliveryTimeStamp: Date;
+  public readonly location: GeoLocation;
 }

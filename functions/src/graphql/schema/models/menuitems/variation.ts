@@ -1,34 +1,35 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
 
-
 @ObjectType({
-  description: "Details of the variation",
+  description:
+    "Variation of a dish. E.g., a preparation of rice in different styles - Fried rice or boiled rice",
 })
-export class Variation extends withObjectTracking("Variation"){
- 
+export class Variation extends withObjectTracking("Variation") {
+  @Field({
+    description: "Indicates whether this variation is available for the item",
+  })
+  public readonly isInStock: boolean;
+
   @Field({
     description: "Name of the variation",
   })
-  public name: string; 
+  public readonly name: string;
+
+  @Field(() => Float, {
+    description: "Packaging charges for the variation",
+  })
+  public readonly packingCharges: number;
+
+  @Field(() => Float, {
+    description: "Price of the variation",
+  })
+  public readonly price: number;
 
   @Field({
-    description: "Category Name of the variation. E.g., variations can be grouped under 'Size', 'Quantity', etc.",
+    description:
+      "Title of of the variation to be displayed, eg. Types of rice, styles of rice",
   })
-  public groupname: string; 
-
-  @Field(()=>Int,{
-    description: "New dish price due to variation",
-  })
-  public price: number; 
-
-  @Field({
-    description: "Flag to indicate whether this variation is available for dish",
-  })
-  public active: boolean; 
-
-  @Field(()=>Int,{
-    description: "Packing charges of the dish corresponding to its variation",
-  })
-  public packingCharges: number;  
+  public readonly title: string;
 }

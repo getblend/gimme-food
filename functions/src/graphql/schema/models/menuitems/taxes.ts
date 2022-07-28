@@ -1,19 +1,18 @@
-import { Field, Float, Int, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
 
-
 @ObjectType({
-  description: "Tax Details",
+  description: "Tax information for a menu item",
 })
-export class Taxes extends withObjectTracking("Tax"){
- 
+export class Taxes extends withObjectTracking("Tax") {
   @Field({
     description: "Type of Tax. E.g., SGST or CGST",
   })
-  public name: string; 
+  public readonly name: string;
 
-  @Field(()=>Float,{
+  @Field(() => Float, {
     description: "Tax percentage. E.g., 5%, 8%, etc.,",
   })
-  public tax: number; 
+  public readonly tax: number;
 }

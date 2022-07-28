@@ -1,56 +1,79 @@
-import { Field, Float, Int, ObjectType } from "type-graphql";
+import {
+  Field,
+  GraphQLISODateTime,
+  ObjectType,
+  registerEnumType,
+} from "type-graphql";
+
 import { withObjectTracking } from "../../mixins";
-import { MenuItem, Store } from "../../models";
-import { CartItem } from "./cartitem";
+import { Store } from "../stores/store";
 import { User } from "../user";
-import { PriceDetail } from "./pricedetail";
-import { TransactionDetails } from "./transactiondetails";
-import { Coupon } from "../coupon";
-import { Address } from "../stores/address";
+import { Cart } from "./cart";
 import { Tracking } from "./tracking";
+import { TransactionType } from "./transaction";
 
 @ObjectType({
   description: "Particulars of the order",
 })
 export class Order extends withObjectTracking("Order") {
+  @Field({
+    description: "Timestamp when order was sucessfully delivered",
+  })
+  public readonly cancellationReason: string;
+
+  @Field(() => GraphQLISODateTime, {
+    description: "Timestamp when order was sucessfully delivered",
+  })
+  public readonly cancelledAt: string;
+
+  @Field(() => Cart, {
+    description: "Store to which the order is placed",
+  })
+  public readonly cart: Cart;
+
+  @Field(() => GraphQLISODateTime, {
+    description: "Timestamp when order was sucessfully delivered",
+  })
+  public readonly deliveredAt: string;
+
+  @Field({
+    description: "The status of the order",
+  })
+  public readonly status: OrderStatus;
+
   @Field(() => Store, {
     description: "Store to which the order is placed",
   })
-  public store: Store;
-
-  @Field(() => [CartItem], {
-    description: "Collection of items added to cart",
-  })
-  public cartitem: CartItem[];
-
-  @Field(() => User, {
-    description: "User that placed the order",
-  })
-  public user: User;
-
-  @Field(() => PriceDetail, {
-    description:
-      "Price details of the order. E.g., Total amount, discount, taxes, etc.",
-  })
-  public priceDetail: PriceDetail;
-
-  @Field(() => Coupon, {
-    description: "Coupon applied on the order",
-  })
-  public coupon: Coupon;
-
-  @Field(() => Address, {
-    description: "Address where the order needs to be delivered",
-  })
-  public deliveryAddress: Address;
-
-  @Field(() => TransactionDetails, {
-    description: "Transation Details of the order",
-  })
-  public transactionDetails: TransactionDetails;
+  public readonly store: Store;
 
   @Field(() => Tracking, {
     description: "Tracking status of the order",
   })
-  public tracking: Tracking;
+  public readonly tracking: Tracking;
+
+  @Field(() => TransactionType, {
+    description: "Transation Details of the order",
+  })
+  public readonly transaction: typeof TransactionType;
+
+  @Field(() => User, {
+    description: "The user that placed the order",
+  })
+  public readonly user: User;
 }
+
+export enum OrderStatus {
+  Cancelled = "cancelled",
+  Delivered = "delivered",
+  Delivering = "delivering",
+  Pending = "pending",
+  PickedUp = "picked_up",
+  Placed = "placed",
+  ReadyForPickup = "ready_for_pickup",
+  Received = "received",
+}
+
+registerEnumType(OrderStatus, {
+  description: "A enumeration of supported status of an order",
+  name: "OrderStatus",
+});

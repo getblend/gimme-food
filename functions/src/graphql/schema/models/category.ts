@@ -1,13 +1,12 @@
-import { Field, Float, Int, ObjectType } from "type-graphql";
-import { withObjectTracking } from "../mixins";
-import { MenuItem, Store } from "../models"
+import { Field, ObjectType } from "type-graphql";
 
+import { withObjectTracking } from "../mixins";
+import { MenuItem, Store } from "../models";
 
 @ObjectType({
   description: "A details of the category",
 })
 export class Category extends withObjectTracking("Category") {
-  
   @Field({
     description: "Code of the category",
   })
@@ -18,13 +17,13 @@ export class Category extends withObjectTracking("Category") {
   })
   public description: string;
 
-  @Field(() => Store, { 
-    description: "Store of the category" 
+  @Field(() => Store, {
+    description: "Store of the category",
   })
   public store: Store;
 
-  @Field(() => MenuItem, { 
-    description: "MenuItem of the category" 
+  @Field(() => MenuItem, {
+    description: "MenuItem of the category",
   })
   public menuItem: MenuItem;
 }

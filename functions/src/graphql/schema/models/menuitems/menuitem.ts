@@ -1,8 +1,10 @@
 import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
 
-import { withObjectTracking } from "../../mixins";
+import { withObjectTracking, withPagination } from "../../mixins";
 import { Store } from "../stores/store";
 import { AddOn } from "./addOn";
+import { Taxes } from "./taxes";
+import { Variation } from "./variation";
 
 export enum DietaryPreference {
   Vegetarian = "veg",
@@ -50,4 +52,18 @@ export class MenuItem extends withObjectTracking("MenuItem") {
     description: "The store that this menu item belongs to",
   })
   public readonly store: Store;
+
+  @Field(() => [Taxes], {
+    description: "Taxes applied on the price of the item",
+  })
+  public readonly taxes: Taxes[];
+
+  @Field(() => [Variation], {
+    description:
+      "Variation of the dish. E.g., a preparation of rice in different styles - Fried rice or boiled rice",
+  })
+  public variations: Variation[];
 }
+
+@ObjectType({ description: "A collection of menu items" })
+export class MenuItemCollection extends withPagination(MenuItem) {}
