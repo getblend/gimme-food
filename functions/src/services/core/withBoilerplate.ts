@@ -3,6 +3,7 @@ import { Inject, Service } from "typedi";
 import { Firebase, IFirebase } from "./firebase";
 import { ILogger, Logger } from "./logger";
 import { ISecrets, Secrets } from "./secrets";
+import { IWebMenuApi, WebMenuApi } from "./webMenuApi";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
 export const withBoilerplate = (serviceName: string) => {
@@ -11,7 +12,8 @@ export const withBoilerplate = (serviceName: string) => {
     protected constructor(
       @Inject(Logger) protected logger: ILogger,
       @Inject(Firebase) protected firebase: IFirebase,
-      @Inject(Secrets) protected secrets: ISecrets
+      @Inject(Secrets) protected secrets: ISecrets,
+      @Inject(WebMenuApi) protected webMenuApi: IWebMenuApi
     ) {
       this.logger.info(`${serviceName} service initialized`);
       this.onInit();

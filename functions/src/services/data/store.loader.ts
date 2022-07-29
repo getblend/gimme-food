@@ -6,6 +6,8 @@ import { withBoilerplate } from "../core";
 import { MenuItemLoader } from "./menuItem.loader";
 
 import type { ImagePost, MenuItem } from "../../graphql/schema";
+// import{mongodb} from "../../services/core/mondodb"
+import mongoose from "mongoose";
 
 @Service()
 export class StoreLoader extends withBoilerplate("StoreLoader") {
@@ -43,6 +45,16 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
   }
 
   public async getMenuItemFromPost(post: ImagePost): Promise<MenuItem> {
+    // console.log("mongodbmenu")
+    // mongoose.connect("mongodb://localhost:27017/theblend", (err: any) => {
+    //   if (err) {
+    //     console.log(err.message);
+    //   } else {
+    //     console.log("Successfully Connected!");
+    //   }
+    // });
+    // //const ab = mongoose.Connection
+       
     return MenuItemLoader.createMockMenuItem(post.id);
   }
 
