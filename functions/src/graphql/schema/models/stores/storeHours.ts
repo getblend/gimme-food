@@ -31,7 +31,7 @@ export class StoreHours extends withObjectTracking("StoreHours") {
   @Field(() => GraphQLISODateTime, {
     description: "An ISO timestamp of when the store closes",
   })
-  public readonly closesAt: string;
+  public readonly closesAt: Date;
 
   @Field({
     description: "A description of the store's working hours",
@@ -41,7 +41,7 @@ export class StoreHours extends withObjectTracking("StoreHours") {
   @Field(() => GraphQLISODateTime, {
     description: "An ISO timestamp of when the store opens",
   })
-  public readonly opensAt: string;
+  public readonly opensAt: Date;
 
   @Field(() => StoreHoursScope, {
     description: "Describes how the store's working hours span across days",

@@ -1,15 +1,21 @@
 import { FieldResolver, Resolver, Root } from "type-graphql";
+import { Inject, Service } from "typedi";
 
+import { StoreLoader } from "../../../services/data";
 import { ImagePost, MenuItem, Store } from "../../schema";
 
+@Service()
 @Resolver(() => ImagePost)
 export class ImagePostResolver {
+  @Inject()
+  private storeDb: StoreLoader;
+
   @FieldResolver(() => MenuItem, {
     description: "The menu item associated with this post",
     nullable: true,
   })
   public menuItem(@Root() post: ImagePost): Promise<MenuItem> {
-    throw new Error("Not Implemented");
+    return this.storeDb.getMenuItemFromPost(post);
   }
 
   @FieldResolver(() => Store, {
@@ -17,6 +23,6 @@ export class ImagePostResolver {
     nullable: true,
   })
   public store(@Root() post: ImagePost): Promise<Store> {
-    throw new Error("Not Implemented");
+    return this.storeDb.getStoreForPost(post);
   }
 }

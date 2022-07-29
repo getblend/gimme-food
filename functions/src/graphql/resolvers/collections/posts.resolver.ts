@@ -1,25 +1,31 @@
-import { Service } from "typedi";
+import { Inject, Service } from "typedi";
 import { Arg, Args, ID, Query, Resolver } from "type-graphql";
 
 import { PageInfoArgs, PostCollection, PostType } from "../../schema";
+import { PostLoader } from "../../../services/data";
 
 @Service()
 @Resolver()
 export class PostsResolver {
-  /**
-   * Returns a single post by id
-   * @param id The id of the post to get
-   * @returns {typeof PostType} The post for the given id
-   */
-  @Query(() => PostType)
-  public post(@Arg("id", () => ID) id: number): Promise<typeof PostType> {
-    throw new Error("Not Implemented");
+  @Inject()
+  private postsLoader: PostLoader;
+
+  @Query(() => PostType, {
+    description: "Returns a single post by id",
+    nullable: true,
+  })
+  public post(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Arg("id", () => ID, { description: "The id of a post" }) id: string
+  ): Promise<typeof PostType> {
+    return this.postsLoader.getPost(id);
   }
 
   @Query(() => PostCollection, {
     description: "Returns a list of posts based on the given pageInfo",
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public posts(@Args() currentPage: PageInfoArgs): Promise<PostCollection> {
-    throw new Error("Not Implemented");
+    return this.postsLoader.getPosts(currentPage);
   }
 }

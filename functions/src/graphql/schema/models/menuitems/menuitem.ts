@@ -54,11 +54,6 @@ export class MenuItem extends withObjectTracking("MenuItem") {
   })
   public readonly price: number;
 
-  @Field(() => Store, {
-    description: "The store that this menu item belongs to",
-  })
-  public readonly store: Store;
-
   @Field(() => [Tax], {
     description: "Taxes applied on the price of the item",
   })
