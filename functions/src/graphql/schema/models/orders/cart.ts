@@ -1,7 +1,7 @@
 import { Field, Float, Int, ObjectType } from "type-graphql";
 
 import { withObjectTracking } from "../../mixins";
-import { MenuItem } from "../menuItems";
+import { MenuItem } from "../index";
 import { Address, Store } from "../stores";
 import { User } from "../user";
 

@@ -1,6 +1,7 @@
 import { initializeAuth } from "./auth";
 import { initializeFirebase } from "./firebase";
 import { initializeSecrets } from "./secrets";
+import { initializeWebMenuApi } from "./webMenuApi";
 
 import type { ExpressContext } from "apollo-server-express";
 import type { Auth } from "./auth";
@@ -24,6 +25,7 @@ export async function initializeContext({
 
   // Things that are done on every request
   const auth = await initializeAuth(req);
+  await initializeWebMenuApi();
 
   // Information that is available via @Ctx()
   return { auth };

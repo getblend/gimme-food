@@ -1,21 +1,30 @@
 import { FieldResolver, Resolver, Root } from "type-graphql";
 import { Inject, Service } from "typedi";
 
-import { StoreLoader } from "../../../services/data";
+import { StoreLoader, MenuItemLoader } from "../../../services/data";
 import { ImagePost, MenuItem, Store } from "../../schema";
 
 @Service()
 @Resolver(() => ImagePost)
 export class ImagePostResolver {
   @Inject()
-  private storeDb: StoreLoader;
+  private storeLoader: StoreLoader;
+
+  @Inject()
+  private menuItemLoader: MenuItemLoader;
 
   @FieldResolver(() => MenuItem, {
     description: "The menu item associated with this post",
     nullable: true,
   })
   public menuItem(@Root() post: ImagePost): Promise<MenuItem> {
-    return this.storeDb.getMenuItemFromPost(post);
+    // Use the post.id to get a raw post from the database
+    // --- since we are using data loader, the post will be cached in memory and we wont have to query the database again
+    // Use the post.menuItemId to get the menu item from the menuItemLoader
+    // Or use the post.storeId to get the menu items from the store
+    return this.menuItemLoader.getMenuItem(
+      "6f2a6068-7c2e-4e56-b770-13bb227cf1b5"
+    );
   }
 
   @FieldResolver(() => Store, {
@@ -23,6 +32,6 @@ export class ImagePostResolver {
     nullable: true,
   })
   public store(@Root() post: ImagePost): Promise<Store> {
-    return this.storeDb.getStoreForPost(post);
+    return this.storeLoader.getStoreForPost(post);
   }
 }

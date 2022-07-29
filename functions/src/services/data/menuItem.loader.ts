@@ -1,23 +1,27 @@
-import { Service } from "typedi";
+import { Inject, Service } from "typedi";
 
 import { make } from "../../helpers/make";
 import { withBoilerplate } from "../core";
 
-import { MenuItem } from "../../graphql/schema";
+import {
+  MenuItem,
+  DietaryPreference,
+  Variation,
+  Tax,
+  AddOn,
+  MenuItemCategory,
+} from "../../graphql/schema";
+import { WebMenuItem, WebMenuItemTax, WebMenuItemLoader } from "../webMenu";
+import { WebMenuItemCategory } from "../webMenu/webMenuItem.loader";
 
 @Service()
 export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
+  @Inject()
+  private webMenuItemLoader: WebMenuItemLoader;
+
   public static createMockMenuItem(seed: string): MenuItem {
     return make(MenuItem, {
       addons: [],
-      category: {
-        code: "",
-        createdAt: new Date(),
-        description: "",
-        id: `Category ${seed}`,
-        name: `Category ${seed}`,
-        updatedAt: new Date(),
-      },
       createdAt: new Date(),
       description: "",
       dietaryPreferences: [],
@@ -31,7 +35,98 @@ export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
     });
   }
 
+  public static fromWebMenuItem(webMenuItem: WebMenuItem): MenuItem {
+    return make(MenuItem, {
+      addons: convertFromAddOns(webMenuItem.subitem),
+      createdAt: new Date(webMenuItem.createdate),
+      description: webMenuItem.description,
+      dietaryPreferences: convertFromFoodType(webMenuItem.foodtype),
+      id: webMenuItem.itemid,
+      isInStock: webMenuItem.active,
+      name: webMenuItem.name,
+      price: webMenuItem.price,
+      taxes: convertFromWebMenuTaxes(webMenuItem.taxes),
+      updatedAt: new Date(webMenuItem.createdate),
+      variations: convertFromWebMenuVariations(webMenuItem.variation),
+    });
+  }
+
+  public static fromWebMenuItemCategory(
+    category: WebMenuItemCategory
+  ): MenuItemCategory {
+    return {
+      id: category.categoryid,
+      name: category.name,
+      createdAt: new Date(category.createdate),
+      description: category.description,
+      updatedAt: new Date(category.createdate),
+    };
+  }
+
+  public async getMenuItem(menuItemId: string): Promise<MenuItem> {
+    const webMenuItem = await this.webMenuItemLoader.getItem(menuItemId);
+    return MenuItemLoader.fromWebMenuItem(webMenuItem);
+  }
+
+  public async loadCategory(menuItemId: string): Promise<MenuItemCategory> {
+    const webMenuItem = await this.webMenuItemLoader.getItem(menuItemId);
+    const category = await this.webMenuItemLoader.getCategory(
+      webMenuItem.categoryid
+    );
+    return MenuItemLoader.fromWebMenuItemCategory(category);
+  }
+
   protected onInit(): void {
     return;
   }
+}
+
+function convertFromFoodType(foodtype: string): DietaryPreference[] {
+  switch (foodtype) {
+    case "vegetarian":
+      return [DietaryPreference.Vegetarian];
+
+    case "non-vegetarian":
+      return [DietaryPreference.NonVegetarian];
+
+    case "eggetarian":
+      return [DietaryPreference.Eggetarian];
+
+    default:
+      return [];
+  }
+}
+
+function convertFromWebMenuTaxes(taxes: WebMenuItemTax[] = []): Tax[] {
+  return taxes.map((tax) => ({
+    id: tax.taxid,
+    name: tax.taxname,
+    percentage: tax.tax,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }));
+}
+
+function convertFromWebMenuVariations(variations: any[]): Variation[] {
+  return variations.map((variation) => ({
+    id: variation.id,
+    name: variation.name,
+    price: variation.price,
+    createdAt: new Date(),
+    isInStock: variation.active,
+    packingCharges: variation.item_packingcharges,
+    updatedAt: new Date(),
+    title: variation.groupname,
+  }));
+}
+
+function convertFromAddOns(subitems: any[]): AddOn[] {
+  return subitems.map((subitem) => ({
+    id: subitem.addonitemid,
+    name: subitem.description,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    price: subitem.price,
+    isInStock: subitem.status,
+  }));
 }

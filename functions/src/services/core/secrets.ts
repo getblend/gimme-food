@@ -7,6 +7,8 @@ export interface ISecrets {
   BLEND_PROJECT_ID: string;
   DATABASE_URL: string;
   FUNCTIONS_EMULATOR: string;
+  MONGO_DB_URL: string;
+  WEB_MENU_API_URL: string;
 }
 
 function validateEnv(
@@ -17,7 +19,9 @@ function validateEnv(
     env.BLEND_PROJECT_ID &&
     env.BLEND_ADMIN_KEY &&
     env.BLEND_API_KEY &&
-    env.DATABASE_URL
+    env.DATABASE_URL &&
+    env.MONGO_DB_URL &&
+    env.WEB_MENU_API_URL
   );
 }
 
@@ -30,7 +34,6 @@ export function initializeSecrets(): void {
     throw new Error(
       "Environment variables are set incorrectly or are missing."
     );
-    return;
   }
 
   if (process.env.FUNCTIONS_EMULATOR) {
@@ -44,5 +47,7 @@ export function initializeSecrets(): void {
     BLEND_PROJECT_ID: secrets["BLEND_PROJECT_ID"],
     DATABASE_URL: secrets["DATABASE_URL"],
     FUNCTIONS_EMULATOR: secrets["FUNCTIONS_EMULATOR"],
+    MONGO_DB_URL: secrets["MONGO_DB_URL"],
+    WEB_MENU_API_URL: secrets["WEB_MENU_API_URL"],
   });
 }

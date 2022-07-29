@@ -7,11 +7,6 @@ import { withObjectTracking } from "../../mixins";
 })
 export class MenuItemCategory extends withObjectTracking("MenuItemCategory") {
   @Field({
-    description: "Code of the category",
-  })
-  public code: string;
-
-  @Field({
     description: "Description of the category",
   })
   public description: string;

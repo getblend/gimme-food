@@ -1,4 +1,4 @@
-export * from "./addon";
+export * from "./addOn";
 export * from "./category";
 export * from "./menuitem";
 export * from "./taxes";

@@ -1,14 +1,15 @@
 import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
 
 import { withObjectTracking, withPagination } from "../../mixins";
-import { AddOn } from "./addOn";
+import { AddOn } from "./index";
 import { MenuItemCategory } from "./category";
 import { Tax } from "./taxes";
 import { Variation } from "./variation";
 
 export enum DietaryPreference {
-  Vegetarian = "veg",
-  NonVegetarian = "nonveg",
+  Vegetarian = "vegetarian",
+  NonVegetarian = "non-vegetarian",
+  Eggetarian = "eggetarian",
 }
 
 registerEnumType(DietaryPreference, {
@@ -22,11 +23,6 @@ registerEnumType(DietaryPreference, {
 export class MenuItem extends withObjectTracking("MenuItem") {
   @Field(() => [AddOn], { description: "Add ons available for this menu item" })
   public readonly addons: AddOn[];
-
-  @Field(() => MenuItemCategory, {
-    description: "Category of this menu item",
-  })
-  public readonly category: MenuItemCategory;
 
   @Field({
     description: "Description of the menu item",
