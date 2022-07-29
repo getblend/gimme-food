@@ -8,15 +8,15 @@ import { StoreHours } from "./storeHours";
   description: "A details of the Store",
 })
 export class Store extends withObjectTracking("Store") {
-  @Field(() => Address, {
-    description: "Address of the store",
-  })
-  public readonly address: Address;
+  // @Field(() => Address, {
+  //   description: "Address of the store",
+  // })
+  // public readonly address: Address;
 
-  @Field(() => [StoreHours], {
-    description: "The hours when the store is working",
-  })
-  public readonly hours: StoreHours[];
+  // @Field(() => [StoreHours], {
+  //   description: "The hours when the store is working",
+  // })
+  // public readonly hours: StoreHours[];
 
   @Field({
     description: "Name of the store",
