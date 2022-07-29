@@ -1,7 +1,6 @@
 import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
 
 import { withObjectTracking, withPagination } from "../../mixins";
-import { Store } from "../stores";
 import { AddOn } from "./addOn";
 import { MenuItemCategory } from "./category";
 import { Tax } from "./taxes";
