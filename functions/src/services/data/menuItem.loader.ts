@@ -3,16 +3,19 @@ import { Inject, Service } from "typedi";
 import { make } from "../../helpers/make";
 import { withBoilerplate } from "../core";
 
-import {
-  MenuItem,
-  DietaryPreference,
+import { MenuItem, DietaryPreference } from "../../graphql/schema";
+
+import { WebMenuItemLoader } from "../webMenu";
+
+import type { WebMenuItemCategory } from "../webMenu/WebMenuItem";
+
+import type {
   Variation,
   Tax,
   AddOn,
   MenuItemCategory,
 } from "../../graphql/schema";
-import { WebMenuItem, WebMenuItemTax, WebMenuItemLoader } from "../webMenu";
-import { WebMenuItemCategory } from "../webMenu/webMenuItem.loader";
+import type { WebMenuItem, WebMenuItemTax } from "../webMenu";
 
 @Service()
 export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
@@ -55,10 +58,10 @@ export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
     category: WebMenuItemCategory
   ): MenuItemCategory {
     return {
-      id: category.categoryid,
-      name: category.name,
       createdAt: new Date(category.createdate),
       description: category.description,
+      id: category.categoryid,
+      name: category.name,
       updatedAt: new Date(category.createdate),
     };
   }
@@ -99,34 +102,34 @@ function convertFromFoodType(foodtype: string): DietaryPreference[] {
 
 function convertFromWebMenuTaxes(taxes: WebMenuItemTax[] = []): Tax[] {
   return taxes.map((tax) => ({
+    createdAt: new Date(),
     id: tax.taxid,
     name: tax.taxname,
     percentage: tax.tax,
-    createdAt: new Date(),
     updatedAt: new Date(),
   }));
 }
 
 function convertFromWebMenuVariations(variations: any[]): Variation[] {
   return variations.map((variation) => ({
-    id: variation.id,
-    name: variation.name,
-    price: variation.price,
     createdAt: new Date(),
+    id: variation.id,
     isInStock: variation.active,
+    name: variation.name,
     packingCharges: variation.item_packingcharges,
-    updatedAt: new Date(),
+    price: variation.price,
     title: variation.groupname,
+    updatedAt: new Date(),
   }));
 }
 
 function convertFromAddOns(subitems: any[]): AddOn[] {
   return subitems.map((subitem) => ({
-    id: subitem.addonitemid,
-    name: subitem.description,
     createdAt: new Date(),
-    updatedAt: new Date(),
-    price: subitem.price,
+    id: subitem.addonitemid,
     isInStock: subitem.status,
+    name: subitem.description,
+    price: subitem.price,
+    updatedAt: new Date(),
   }));
 }

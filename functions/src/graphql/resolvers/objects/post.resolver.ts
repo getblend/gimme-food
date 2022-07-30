@@ -8,16 +8,17 @@ import { ImagePost, MenuItem, Store } from "../../schema";
 @Resolver(() => ImagePost)
 export class ImagePostResolver {
   @Inject()
-  private storeLoader: StoreLoader;
+  private menuItemLoader: MenuItemLoader;
 
   @Inject()
-  private menuItemLoader: MenuItemLoader;
+  private storeLoader: StoreLoader;
 
   @FieldResolver(() => MenuItem, {
     description: "The menu item associated with this post",
     nullable: true,
   })
   public menuItem(@Root() post: ImagePost): Promise<MenuItem> {
+    console.log("post", post);
     // Use the post.id to get a raw post from the database
     // --- since we are using data loader, the post will be cached in memory and we wont have to query the database again
     // Use the post.menuItemId to get the menu item from the menuItemLoader

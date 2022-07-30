@@ -199,18 +199,15 @@ module.exports = {
     project: ["tsconfig.json"],
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "import", "prettier"],
+  plugins: ["@typescript-eslint", "import", "prettier", "typescript-sort-keys"],
   root: true,
   rules: {
     "new-cap": "off",
     "prettier/prettier": "error",
     quotes: ["error", "double"],
     "require-jsdoc": "off",
-    "sort-keys": [
-      "error",
-      "asc",
-      { caseSensitive: true, minKeys: 2, natural: true },
-    ],
+    "typescript-sort-keys/interface": "error",
+    "typescript-sort-keys/string-enum": "error",
     "valid-jsdoc": "off",
   },
 };

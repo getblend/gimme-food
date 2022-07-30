@@ -8,7 +8,7 @@ import { MenuItem, MenuItemCategory } from "../../schema";
 @Resolver(() => MenuItem)
 export class MenuItemResolver {
   @Inject()
-  menuItemLoader: MenuItemLoader;
+  private menuItemLoader: MenuItemLoader;
 
   @FieldResolver(() => MenuItemCategory, {
     description: "The category of this menu item",

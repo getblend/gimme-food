@@ -6,8 +6,6 @@ import { withBoilerplate } from "../core";
 import { MenuItemLoader } from "./menuItem.loader";
 
 import type { ImagePost, MenuItem } from "../../graphql/schema";
-// import{mongodb} from "../../services/core/mondodb"
-import mongoose from "mongoose";
 
 @Service()
 export class StoreLoader extends withBoilerplate("StoreLoader") {
@@ -54,7 +52,7 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
     //   }
     // });
     // //const ab = mongoose.Connection
-       
+
     return MenuItemLoader.createMockMenuItem(post.id);
   }
 

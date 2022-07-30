@@ -1,8 +1,10 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 import { Container, Token } from "typedi";
 
 import { Logger } from "./logger";
 import { Secrets } from "./secrets";
+
+import type { AxiosInstance } from "axios";
 
 export type IWebMenuApi = AxiosInstance;
 export const WebMenuApi = new Token<IWebMenuApi>();

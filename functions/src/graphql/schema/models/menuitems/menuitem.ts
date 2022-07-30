@@ -1,15 +1,13 @@
 import { Field, Float, ObjectType, registerEnumType } from "type-graphql";
 
 import { withObjectTracking, withPagination } from "../../mixins";
-import { AddOn } from "./index";
-import { MenuItemCategory } from "./category";
-import { Tax } from "./taxes";
-import { Variation } from "./variation";
+
+import { AddOn, Tax, Variation } from "./index";
 
 export enum DietaryPreference {
-  Vegetarian = "vegetarian",
-  NonVegetarian = "non-vegetarian",
   Eggetarian = "eggetarian",
+  NonVegetarian = "non-vegetarian",
+  Vegetarian = "vegetarian",
 }
 
 registerEnumType(DietaryPreference, {
