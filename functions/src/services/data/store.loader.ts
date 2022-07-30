@@ -1,14 +1,21 @@
-import { Service } from "typedi";
+import { Inject, Service } from "typedi";
 
 import { Store, StoreHoursScope } from "../../graphql/schema";
 import { make } from "../../helpers/make";
 import { withBoilerplate } from "../core";
 import { MenuItemLoader } from "./menuItem.loader";
 
-import type { ImagePost, MenuItem } from "../../graphql/schema";
+import { WebMenuStoreLoader } from "../webMenu";
+
+import type { WebMenuStore } from "../webMenu";
+
+import type { ImagePost, MenuItem, StoreHours } from "../../graphql/schema";
 
 @Service()
 export class StoreLoader extends withBoilerplate("StoreLoader") {
+  @Inject()
+  private webMenuStoreLoader: WebMenuStoreLoader;
+
   public static createMockStore(seed: string): Store {
     return make(Store, {
       address: {
@@ -41,19 +48,36 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
       updatedAt: new Date(),
     });
   }
+  public static fromWebMenuStore(store: WebMenuStore): Store {
+    return {
+      address: {
+        building: "123",
+        city: store.address.city,
+        country: store.address.country,
+        geoLocation: {
+          latitude: store.address.latitude,
+          longitude: store.address.longitude,
+          plusCode: "+4GQ+2X",
+        },
+        landmark: "Main St",
+        postalCode: store.address.pincode,
+        street: store.address.area,
+      },
+      createdAt: new Date(store.createdate),
+      hours: convertFromWebMenuHours(store.openclosetime),
+      id: store.userid,
+      name: store.username,
+      updatedAt: new Date(),
+    };
+  }
 
   public async getMenuItemFromPost(post: ImagePost): Promise<MenuItem> {
-    // console.log("mongodbmenu")
-    // mongoose.connect("mongodb://localhost:27017/theblend", (err: any) => {
-    //   if (err) {
-    //     console.log(err.message);
-    //   } else {
-    //     console.log("Successfully Connected!");
-    //   }
-    // });
-    // //const ab = mongoose.Connection
-
     return MenuItemLoader.createMockMenuItem(post.id);
+  }
+
+  public async getStore(StoreId: string): Promise<Store> {
+    const webMenuStore = await this.webMenuStoreLoader.getStore(StoreId);
+    return StoreLoader.fromWebMenuStore(webMenuStore);
   }
 
   public async getStoreForPost(post: ImagePost): Promise<Store> {
@@ -62,5 +86,45 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
 
   protected onInit(): void {
     return;
+  }
+}
+function convertFromWebMenuHours(storeHours: any[]): StoreHours[] {
+  return storeHours.map((storeHours) => ({
+    // closesAt: new Date(storeHours.endtime),
+    closesAt: new Date(),
+    createdAt: new Date(),
+    description: "Weekday hours",
+    id: storeHours._id,
+    opensAt: new Date(),
+    scope: convertFromWeekDay(storeHours.weekday),
+    updatedAt: new Date(),
+  }));
+}
+
+function convertFromWeekDay(weekday: string): StoreHoursScope {
+  switch (weekday) {
+    case "sunday":
+      return StoreHoursScope.Sunday;
+
+    case "monday":
+      return StoreHoursScope.Monday;
+
+    case "tuesday":
+      return StoreHoursScope.Thursday;
+
+    case "Wednesday":
+      return StoreHoursScope.Wednesday;
+
+    case "thursday":
+      return StoreHoursScope.Thursday;
+
+    case "friday":
+      return StoreHoursScope.Friday;
+
+    case "saturday":
+      return StoreHoursScope.Saturday;
+
+    default:
+      return StoreHoursScope.Weekends;
   }
 }

@@ -18,7 +18,6 @@ export class ImagePostResolver {
     nullable: true,
   })
   public menuItem(@Root() post: ImagePost): Promise<MenuItem> {
-    console.log("post", post);
     // Use the post.id to get a raw post from the database
     // --- since we are using data loader, the post will be cached in memory and we wont have to query the database again
     // Use the post.menuItemId to get the menu item from the menuItemLoader
@@ -33,6 +32,6 @@ export class ImagePostResolver {
     nullable: true,
   })
   public store(@Root() post: ImagePost): Promise<Store> {
-    return this.storeLoader.getStoreForPost(post);
+    return this.storeLoader.getStore("e005f05b-6358-40af-b600-bd68df28ffdd");
   }
 }
