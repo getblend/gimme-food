@@ -71,6 +71,11 @@ export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
     return MenuItemLoader.fromWebMenuItem(webMenuItem);
   }
 
+  public async getMenuItems(storeId: string): Promise<MenuItem> {
+    const webMenuItems = await this.webMenuItemLoader.getItem(storeId);
+    return MenuItemLoader.fromWebMenuItem(webMenuItems);
+  }
+
   public async loadCategory(menuItemId: string): Promise<MenuItemCategory> {
     const webMenuItem = await this.webMenuItemLoader.getItem(menuItemId);
     const category = await this.webMenuItemLoader.getCategory(

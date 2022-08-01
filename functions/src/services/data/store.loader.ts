@@ -71,6 +71,33 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
     };
   }
 
+  public static fromWebMenuStores(stores: any): Store {
+    return stores.map((store: any) => ({
+      address: {
+        building: "123",
+        city: store.address.city == null ? "empty" : store.address.city,
+        country:
+          store.address.country == null ? "empty" : store.address.country,
+        geoLocation: {
+          latitude:
+            store.address.latitude == null ? "empty" : store.address.latitude,
+          longitude:
+            store.address.longitude == null ? "empty" : store.address.longitude,
+          plusCode: "+4GQ+2X",
+        },
+        landmark: "Main St",
+        postalCode:
+          store.address.pincode == null ? "empty" : store.address.pincode,
+        street: store.address.area == null ? "empty" : store.address.area,
+      },
+      createdAt: new Date(),
+      hours: convertFromWebMenuHours(store.openclosetime),
+      id: store.userid,
+      name: store.username,
+      updatedAt: new Date(),
+    }));
+  }
+
   public async getMenuItemFromPost(post: ImagePost): Promise<MenuItem> {
     return MenuItemLoader.createMockMenuItem(post.id);
   }
@@ -82,6 +109,11 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
 
   public async getStoreForPost(post: ImagePost): Promise<Store> {
     return StoreLoader.createMockStore(post.id);
+  }
+
+  public async getStores(): Promise<Store> {
+    const webMenuStores = await this.webMenuStoreLoader.getStores();
+    return StoreLoader.fromWebMenuStores(webMenuStores);
   }
 
   protected onInit(): void {

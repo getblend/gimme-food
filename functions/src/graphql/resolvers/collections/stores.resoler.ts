@@ -21,4 +21,12 @@ export class StoreResolver {
   ): Promise<Store> {
     return this.storeLoader.getStore(id);
   }
+
+  @Query(() => [Store], {
+    description: "Returns a single store by id",
+    nullable: true,
+  })
+  public stores(): Promise<Store> {
+    return this.storeLoader.getStores();
+  }
 }

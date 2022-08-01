@@ -52,6 +52,16 @@ export class WebMenuStoreLoader extends withBoilerplate("WebMenuStoreLoader") {
     }
   }
 
+  public async getStores(): Promise<WebMenuStore> {
+    try {
+      const { data } = await this.webMenuApi.get<WebMenuStore>("/store");
+      return data;
+    } catch (error) {
+      this.logger.error("Error while fetching stores from web menu api", error);
+      throw new Error("Error while fetching stores from web menu api");
+    }
+  }
+
   protected onInit(): void {
     return;
   }
