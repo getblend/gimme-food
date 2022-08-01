@@ -1,6 +1,7 @@
 import { PostsResolver } from "./collections/posts.resolver";
 import { UsersResolver } from "./collections/users.resolver";
-import { StoreResolver } from "./collections/stores.resoler";
+import { StoresResolver } from "./collections/stores.resoler";
+import { MenuItemsResolver } from "./collections/menuItems.resolver";
 
 import { ImagePostResolver } from "./objects/post.resolver";
 import { MenuItemResolver } from "./objects/menuItem.resolver";
@@ -10,5 +11,6 @@ export const resolvers = [
   ImagePostResolver,
   UsersResolver,
   MenuItemResolver,
-  StoreResolver,
+  StoresResolver,
+  MenuItemsResolver,
 ] as const;

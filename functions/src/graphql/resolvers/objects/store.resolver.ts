@@ -14,7 +14,7 @@ export class ImagePostResolver {
     description: "The menu items get by storeid",
     nullable: true,
   })
-  public menuItem(@Root() store: Store): Promise<MenuItem> {
+  public menuItems(@Root() store: Store): Promise<MenuItem> {
     return this.menuItemLoader.getMenuItems(
       "6f2a6068-7c2e-4e56-b770-13bb227cf1b5"
     );

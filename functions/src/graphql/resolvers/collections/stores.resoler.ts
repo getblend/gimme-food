@@ -7,7 +7,7 @@ import { StoreLoader } from "../../../services/data";
 
 @Service()
 @Resolver()
-export class StoreResolver {
+export class StoresResolver {
   @Inject()
   private storeLoader: StoreLoader;
 
