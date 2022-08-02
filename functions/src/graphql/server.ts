@@ -8,14 +8,24 @@ import { resolvers } from "./resolvers";
 
 import type { PluginDefinition } from "apollo-server-core";
 
-const loggingPlugin: PluginDefinition = {
+const requestPlugin: PluginDefinition = {
+  async serverWillStart({ logger }) {
+    logger.info("[GQL] Server is starting");
+
+    return {
+      async serverWillStop(): Promise<void> {
+        logger.info("[GQL] Server is stopping");
+      },
+
+      schemaDidLoadOrUpdate(): void {
+        logger.info("[GQL] Schema was loaded");
+      },
+    };
+  },
+
   // Fires whenever a GraphQL request is received from a client.
-  async requestDidStart(requestContext) {
-    functions.logger.info(
-      `[GQL] ${requestContext.request.operationName}`,
-      requestContext.request.query,
-      requestContext.request.variables
-    );
+  async requestDidStart({ request, logger }) {
+    logger.info(`[GQL] ${request.operationName} ${request.query}`);
 
     return {
       async didEncounterErrors(errors): Promise<void> {
@@ -38,8 +48,8 @@ const server = new ApolloServer({
   debug: true,
   introspection: true,
   logger: functions.logger,
-  plugins: [loggingPlugin],
   schema,
+  plugins: [requestPlugin],
 });
 
 const handler = server.createHandler();
@@ -48,9 +58,7 @@ export const graphql = functions
   .region("asia-east1")
   .https.onRequest((req, res) => {
     try {
-      handler(req, res, (...args) => {
-        functions.logger.debug(...args);
-      });
+      handler(req, res, () => undefined);
     } catch (error) {
       functions.logger.error(error);
       res.status(500).send("Something went wrong when handling the request.");

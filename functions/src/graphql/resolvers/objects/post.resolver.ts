@@ -1,12 +1,14 @@
 import { FieldResolver, Resolver, Root } from "type-graphql";
 import { Inject, Service } from "typedi";
 
+import { withBoilerplate } from "../../../services/core";
+
 import { StoreLoader, MenuItemLoader } from "../../../services/data";
 import { ImagePost, MenuItem, Store } from "../../schema";
 
 @Service()
 @Resolver(() => ImagePost)
-export class ImagePostResolver {
+export class ImagePostResolver extends withBoilerplate("ImagePostResolver") {
   @Inject()
   private menuItemLoader: MenuItemLoader;
 
@@ -35,5 +37,9 @@ export class ImagePostResolver {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public store(@Root() post: ImagePost): Promise<Store> {
     return this.storeLoader.getStore("e005f05b-6358-40af-b600-bd68df28ffdd");
+  }
+
+  protected onInit(): void {
+    return;
   }
 }

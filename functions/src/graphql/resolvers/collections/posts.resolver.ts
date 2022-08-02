@@ -3,10 +3,11 @@ import { Arg, Args, ID, Query, Resolver } from "type-graphql";
 
 import { PageInfoArgs, PostCollection, PostType } from "../../schema";
 import { PostLoader } from "../../../services/data";
+import { withBoilerplate } from "../../../services/core";
 
 @Service()
 @Resolver()
-export class PostsResolver {
+export class PostsResolver extends withBoilerplate("PostsResolver") {
   @Inject()
   private postsLoader: PostLoader;
 
@@ -27,5 +28,9 @@ export class PostsResolver {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public posts(@Args() currentPage: PageInfoArgs): Promise<PostCollection> {
     return this.postsLoader.getPosts(currentPage);
+  }
+
+  protected onInit(): void {
+    return;
   }
 }

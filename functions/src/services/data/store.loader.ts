@@ -1,15 +1,19 @@
 import { Inject, Service } from "typedi";
 
 import { Store, StoreHoursScope } from "../../graphql/schema";
-import { make } from "../../helpers/make";
+import { make, makeCollection } from "../../helpers/make";
 import { withBoilerplate } from "../core";
 import { MenuItemLoader } from "./menuItem.loader";
-
 import { WebMenuStoreLoader } from "../webMenu";
 
-import type { WebMenuStore } from "../webMenu";
+import type {
+  ImagePost,
+  MenuItem,
+  StoreHours,
+  StoreCollection,
+} from "../../graphql/schema";
 
-import type { ImagePost, MenuItem, StoreHours } from "../../graphql/schema";
+import type { WebMenuStore } from "../webMenu";
 
 @Service()
 export class StoreLoader extends withBoilerplate("StoreLoader") {
@@ -48,6 +52,7 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
       updatedAt: new Date(),
     });
   }
+
   public static fromWebMenuStore(store: WebMenuStore): Store {
     return {
       address: {
@@ -71,8 +76,8 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
     };
   }
 
-  public static fromWebMenuStores(stores: any): Store {
-    return stores.map((store: any) => ({
+  public static fromWebMenuStores(stores: WebMenuStore[]): Store[] {
+    return stores.map((store) => ({
       address: {
         building: "123",
         city: store.address.city == null ? "empty" : store.address.city,
@@ -111,15 +116,18 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
     return StoreLoader.createMockStore(post.id);
   }
 
-  public async getStores(): Promise<Store> {
+  public async getStores(): Promise<StoreCollection> {
     const webMenuStores = await this.webMenuStoreLoader.getStores();
-    return StoreLoader.fromWebMenuStores(webMenuStores);
+    const stores = StoreLoader.fromWebMenuStores(webMenuStores);
+    return makeCollection<StoreCollection>(stores);
   }
 
   protected onInit(): void {
     return;
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function convertFromWebMenuHours(storeHours: any[]): StoreHours[] {
   return storeHours.map((storeHours) => ({
     // closesAt: new Date(storeHours.endtime),
@@ -157,6 +165,6 @@ function convertFromWeekDay(weekday: string): StoreHoursScope {
       return StoreHoursScope.Saturday;
 
     default:
-      return StoreHoursScope.Weekends;
+      return StoreHoursScope.Weekdays;
   }
 }

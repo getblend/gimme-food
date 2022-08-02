@@ -1,13 +1,13 @@
 import { Inject, Service } from "typedi";
 import { Arg, ID, Query, Resolver } from "type-graphql";
 
-import { Store } from "../../schema";
-
+import { Store, StoreCollection } from "../../schema";
 import { StoreLoader } from "../../../services/data";
+import { withBoilerplate } from "../../../services/core";
 
 @Service()
 @Resolver()
-export class StoresResolver {
+export class StoresResolver extends withBoilerplate("StoresResolver") {
   @Inject()
   private storeLoader: StoreLoader;
 
@@ -22,11 +22,15 @@ export class StoresResolver {
     return this.storeLoader.getStore(id);
   }
 
-  @Query(() => [Store], {
-    description: "Returns a single store by id",
+  @Query(() => StoreCollection, {
+    description: "Returns a collection of stores",
     nullable: true,
   })
-  public stores(): Promise<Store> {
+  public stores(): Promise<StoreCollection> {
     return this.storeLoader.getStores();
+  }
+
+  protected onInit(): void {
+    return;
   }
 }
