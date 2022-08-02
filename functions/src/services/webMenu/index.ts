@@ -1,10 +1,2 @@
-export {
-  WebMenuItem,
-  WebMenuItemTax,
-  WebMenuItemLoader,
-} from "./webMenuItem.loader";
-export {
-  WebMenuStoreLoader,
-  WebMenuStore,
-  WebMenuTime,
-} from "./webMenuStore.loader";
+export * from "./webMenuItem.loader";
+export * from "./webMenuStore.loader";

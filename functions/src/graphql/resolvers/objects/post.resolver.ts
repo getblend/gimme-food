@@ -17,6 +17,7 @@ export class ImagePostResolver {
     description: "The menu item associated with this post",
     nullable: true,
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public menuItem(@Root() post: ImagePost): Promise<MenuItem> {
     // Use the post.id to get a raw post from the database
     // --- since we are using data loader, the post will be cached in memory and we wont have to query the database again
@@ -31,6 +32,7 @@ export class ImagePostResolver {
     description: "The store associated with this post",
     nullable: true,
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public store(@Root() post: ImagePost): Promise<Store> {
     return this.storeLoader.getStore("e005f05b-6358-40af-b600-bd68df28ffdd");
   }
