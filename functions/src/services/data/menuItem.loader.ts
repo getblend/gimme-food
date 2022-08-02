@@ -67,14 +67,32 @@ export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
     };
   }
 
+  public static fromWebMenuItems(webMenuItems: WebMenuItem[]): MenuItem[] {
+    console.log("webMenuItems");
+    console.log(webMenuItems);
+    return webMenuItems.map((webMenuItem) => ({
+      addons: convertFromAddOns(webMenuItem.subitem),
+      createdAt: new Date(webMenuItem.createdate),
+      description: webMenuItem.description,
+      dietaryPreferences: convertFromFoodType(webMenuItem.foodtype),
+      id: webMenuItem.itemid,
+      isInStock: webMenuItem.active,
+      name: webMenuItem.name,
+      price: webMenuItem.price,
+      taxes: convertFromWebMenuTaxes(webMenuItem.taxes),
+      updatedAt: new Date(webMenuItem.createdate),
+      variations: convertFromWebMenuVariations(webMenuItem.variation),
+    }));
+  }
+
   public async getMenuItem(menuItemId: string): Promise<MenuItem> {
     const webMenuItem = await this.webMenuItemLoader.getItem(menuItemId);
     return MenuItemLoader.fromWebMenuItem(webMenuItem);
   }
 
   public async getMenuItems(storeId: string): Promise<MenuItemCollection> {
-    const webMenuItems = await this.webMenuItemLoader.getItem(storeId);
-    const menuItems = [MenuItemLoader.fromWebMenuItem(webMenuItems)];
+    const webMenuItems = await this.webMenuItemLoader.getItems(storeId);
+    const menuItems = MenuItemLoader.fromWebMenuItems(webMenuItems);
     return makeCollection<MenuItemCollection>(menuItems);
   }
 
