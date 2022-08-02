@@ -7,7 +7,7 @@ export const withObjectTracking = (tag: string) => {
     @Field(() => GraphQLISODateTime, {
       description: `Timestamp when the ${tag} was created`,
     })
-    public readonly createdAt?: Date;
+    public readonly createdAt: Date;
 
     @Field(() => ID, {
       description: `UniqueID of ${tag}`,
@@ -17,7 +17,7 @@ export const withObjectTracking = (tag: string) => {
     @Field(() => GraphQLISODateTime, {
       description: `Timestamp when the ${tag} was updated`,
     })
-    public readonly updatedAt?: Date;
+    public readonly updatedAt: Date;
   }
 
   return ObjectTracking;

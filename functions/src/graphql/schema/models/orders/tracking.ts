@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 
 import { withObjectTracking } from "../../mixins";
-import { GeoLocation } from "../stores";
+import { GeoLocation } from "../stores/geoLocation";
 
 @ObjectType({
   description: "Tracking state of the order item",
