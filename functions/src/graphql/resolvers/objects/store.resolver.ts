@@ -18,9 +18,7 @@ export class StoreResolver extends withBoilerplate("StoreResolver") {
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public menuItems(@Root() _store: Store): Promise<MenuItemCollection> {
-    return this.menuItemLoader.getMenuItems(
-      "6f2a6068-7c2e-4e56-b770-13bb227cf1b5"
-    );
+    return this.menuItemLoader.getMenuItems(_store.id);
   }
 
   protected onInit(): void {
