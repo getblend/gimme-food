@@ -7,15 +7,17 @@ import { MenuItem, DietaryPreference } from "../../graphql/schema";
 
 import { WebMenuItemLoader } from "../webMenu";
 
-import type { WebMenuItemCategory } from "../webMenu/WebMenuItem";
-
 import type {
   Variation,
   Tax,
   AddOn,
   MenuItemCategory,
 } from "../../graphql/schema";
-import type { WebMenuItem, WebMenuItemTax } from "../webMenu";
+import type {
+  WebMenuItem,
+  WebMenuItemTax,
+  WebMenuItemCategory,
+} from "../webMenu";
 
 @Service()
 export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
@@ -110,6 +112,7 @@ function convertFromWebMenuTaxes(taxes: WebMenuItemTax[] = []): Tax[] {
   }));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function convertFromWebMenuVariations(variations: any[]): Variation[] {
   return variations.map((variation) => ({
     createdAt: new Date(),
@@ -123,6 +126,7 @@ function convertFromWebMenuVariations(variations: any[]): Variation[] {
   }));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function convertFromAddOns(subitems: any[]): AddOn[] {
   return subitems.map((subitem) => ({
     createdAt: new Date(),

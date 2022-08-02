@@ -7,7 +7,7 @@ import { Secrets } from "./secrets";
 export async function initializeMongoDb(): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     const secrets = Container.get(Secrets);
-    mongoose.connect(secrets["MONGO_DB_URL"], (err: any) => {
+    mongoose.connect(secrets["MONGO_DB_URL"], (err) => {
       const logger = Container.get(Logger);
       if (err) {
         logger.error(err.message);

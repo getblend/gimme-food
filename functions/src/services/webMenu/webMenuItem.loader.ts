@@ -19,9 +19,11 @@ export interface WebMenuItem {
   partnerid: string;
   price: number;
   specialtags: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subitem: any[];
   tax: number;
   taxes: WebMenuItemTax[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   variation: any[];
   vat: number;
 }
