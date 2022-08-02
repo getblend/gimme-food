@@ -24,7 +24,7 @@ export class Order extends withObjectTracking("Order") {
   @Field(() => GraphQLISODateTime, {
     description: "Timestamp when order was sucessfully delivered",
   })
-  public readonly cancelledAt: string;
+  public readonly cancelledAt: Date;
 
   @Field(() => Cart, {
     description: "Store to which the order is placed",
@@ -34,9 +34,9 @@ export class Order extends withObjectTracking("Order") {
   @Field(() => GraphQLISODateTime, {
     description: "Timestamp when order was sucessfully delivered",
   })
-  public readonly deliveredAt: string;
+  public readonly deliveredAt: Date;
 
-  @Field({
+  @Field(() => OrderStatus, {
     description: "The status of the order",
   })
   public readonly status: OrderStatus;

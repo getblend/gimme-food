@@ -24,7 +24,7 @@ export class MenuItemsResolver extends withBoilerplate("MenuItemsResolver") {
 
   @Query(() => MenuItemCollection, {
     description: "Returns a collection of menuItems",
-    nullable: false,
+    nullable: true,
   })
   public menuItems(
     @Arg("id", () => ID, { description: "The id of menuitem" }) id: string
