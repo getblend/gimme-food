@@ -1,10 +1,8 @@
 import { Inject, Service } from "typedi";
 
-import { make } from "../../helpers/make";
+import { make, makeCollection } from "../../helpers/make";
 import { withBoilerplate } from "../core";
-
 import { MenuItem, DietaryPreference } from "../../graphql/schema";
-
 import { WebMenuItemLoader } from "../webMenu";
 
 import type {
@@ -12,6 +10,7 @@ import type {
   Tax,
   AddOn,
   MenuItemCategory,
+  MenuItemCollection,
 } from "../../graphql/schema";
 import type {
   WebMenuItem,
@@ -71,6 +70,12 @@ export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
   public async getMenuItem(menuItemId: string): Promise<MenuItem> {
     const webMenuItem = await this.webMenuItemLoader.getItem(menuItemId);
     return MenuItemLoader.fromWebMenuItem(webMenuItem);
+  }
+
+  public async getMenuItems(storeId: string): Promise<MenuItemCollection> {
+    const webMenuItems = await this.webMenuItemLoader.getItem(storeId);
+    const menuItems = [MenuItemLoader.fromWebMenuItem(webMenuItems)];
+    return makeCollection<MenuItemCollection>(menuItems);
   }
 
   public async loadCategory(menuItemId: string): Promise<MenuItemCategory> {

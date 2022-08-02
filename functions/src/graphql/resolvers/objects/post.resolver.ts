@@ -1,12 +1,14 @@
 import { FieldResolver, Resolver, Root } from "type-graphql";
 import { Inject, Service } from "typedi";
 
+import { withBoilerplate } from "../../../services/core";
+
 import { StoreLoader, MenuItemLoader } from "../../../services/data";
 import { ImagePost, MenuItem, Store } from "../../schema";
 
 @Service()
 @Resolver(() => ImagePost)
-export class ImagePostResolver {
+export class ImagePostResolver extends withBoilerplate("ImagePostResolver") {
   @Inject()
   private menuItemLoader: MenuItemLoader;
 
@@ -17,8 +19,8 @@ export class ImagePostResolver {
     description: "The menu item associated with this post",
     nullable: true,
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public menuItem(@Root() post: ImagePost): Promise<MenuItem> {
-    console.log("post", post);
     // Use the post.id to get a raw post from the database
     // --- since we are using data loader, the post will be cached in memory and we wont have to query the database again
     // Use the post.menuItemId to get the menu item from the menuItemLoader
@@ -32,7 +34,12 @@ export class ImagePostResolver {
     description: "The store associated with this post",
     nullable: true,
   })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public store(@Root() post: ImagePost): Promise<Store> {
-    return this.storeLoader.getStoreForPost(post);
+    return this.storeLoader.getStore("e005f05b-6358-40af-b600-bd68df28ffdd");
+  }
+
+  protected onInit(): void {
+    return;
   }
 }

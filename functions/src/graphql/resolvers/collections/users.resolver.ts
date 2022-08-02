@@ -7,7 +7,7 @@ import { UserLoader } from "../../../services/data";
 
 @Service()
 @Resolver()
-export class UsersResolver extends withBoilerplate("UserResolver") {
+export class UsersResolver extends withBoilerplate("UsersResolver") {
   @Inject()
   private userLoader: UserLoader;
 
