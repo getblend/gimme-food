@@ -36,6 +36,11 @@ jobs:
           echo BLEND_API_KEY=${{ secrets.BLEND_API_KEY }} >> .env
           echo UNSPLASH_API_KEY=${{ secrets.UNSPLASH_API_KEY }} >> .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          echo APOLLO_GRAPH_REF=${{ secrets.APOLLO_GRAPH_REF }} >> .env
+          echo APOLLO_KEY=${{ secrets.APOLLO_KEY }} >> .env
+          echo APOLLO_SCHEMA_REPORTING=${{ secrets.APOLLO_SCHEMA_REPORTING }} >> .env
+          echo MONGO_DB_URL=${{ secrets.MONGO_DB_URL }} >> .env
+          echo WEB_MENU_API_URL=${{ secrets.WEB_MENU_API_URL }} >> .env
 
       - name: deploy to firebase
         run: |

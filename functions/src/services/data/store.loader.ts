@@ -12,6 +12,7 @@ import type {
   StoreCollection,
   StoreHours,
   MenuItemCollection,
+  Address,
 } from "../../graphql/schema";
 
 import type { WebMenuStore } from "../webMenu";
@@ -26,19 +27,7 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
 
   public static createMockStore(seed: string): Store {
     return make(Store, {
-      address: {
-        building: "123",
-        city: "New York",
-        country: "USA",
-        geoLocation: {
-          latitude: "40.7128",
-          longitude: "-74.0060",
-          plusCode: "+4GQ+2X",
-        },
-        landmark: "Main St",
-        postalCode: "10001",
-        street: "123 Main St",
-      },
+      address: createAddress(),
       createdAt: new Date(),
       hours: [
         {
@@ -59,19 +48,7 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
 
   public static fromWebMenuStore(store: WebMenuStore): Store {
     return {
-      address: {
-        building: "123",
-        city: store.address.city,
-        country: store.address.country,
-        geoLocation: {
-          latitude: store.address.latitude,
-          longitude: store.address.longitude,
-          plusCode: "+4GQ+2X",
-        },
-        landmark: "Main St",
-        postalCode: store.address.pincode,
-        street: store.address.area,
-      },
+      address: createAddress(store.address),
       createdAt: new Date(store.createdate),
       hours: convertFromWebMenuHours(store.openclosetime),
       id: store.userid,
@@ -154,4 +131,20 @@ function convertFromWeekDay(weekday: string): StoreHoursScope {
     default:
       return StoreHoursScope.Weekdays;
   }
+}
+
+function createAddress(address?: WebMenuStore["address"]): Address {
+  return {
+    building: "123",
+    city: address?.city ?? "New York",
+    country: address?.country ?? "USA",
+    geoLocation: {
+      latitude: address?.latitude ?? "40.7128",
+      longitude: address?.longitude ?? "-74.0060",
+      plusCode: "+4GQ+2X",
+    },
+    landmark: "Main St",
+    postalCode: address?.pincode ?? "10001",
+    street: address?.area ?? "Main St",
+  };
 }
