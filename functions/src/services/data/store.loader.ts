@@ -3,20 +3,24 @@ import { Inject, Service } from "typedi";
 import { Store, StoreHoursScope } from "../../graphql/schema";
 import { make, makeCollection } from "../../helpers/make";
 import { withBoilerplate } from "../core";
+import { WebMenuItemLoader, WebMenuStoreLoader } from "../webMenu";
 import { MenuItemLoader } from "./menuItem.loader";
-import { WebMenuStoreLoader } from "../webMenu";
 
 import type {
   ImagePost,
   MenuItem,
-  StoreHours,
   StoreCollection,
+  StoreHours,
+  MenuItemCollection,
 } from "../../graphql/schema";
 
 import type { WebMenuStore } from "../webMenu";
 
 @Service()
 export class StoreLoader extends withBoilerplate("StoreLoader") {
+  @Inject()
+  private webMenuItemLoader: WebMenuItemLoader;
+
   @Inject()
   private webMenuStoreLoader: WebMenuStoreLoader;
 
@@ -77,34 +81,17 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
   }
 
   public static fromWebMenuStores(stores: WebMenuStore[]): Store[] {
-    return stores.map((store) => ({
-      address: {
-        building: "123",
-        city: store.address.city == null ? "empty" : store.address.city,
-        country:
-          store.address.country == null ? "empty" : store.address.country,
-        geoLocation: {
-          latitude:
-            store.address.latitude == null ? "empty" : store.address.latitude,
-          longitude:
-            store.address.longitude == null ? "empty" : store.address.longitude,
-          plusCode: "+4GQ+2X",
-        },
-        landmark: "Main St",
-        postalCode:
-          store.address.pincode == null ? "empty" : store.address.pincode,
-        street: store.address.area == null ? "empty" : store.address.area,
-      },
-      createdAt: new Date(),
-      hours: convertFromWebMenuHours(store.openclosetime),
-      id: store.userid,
-      name: store.username,
-      updatedAt: new Date(),
-    }));
+    return stores.map(StoreLoader.fromWebMenuStore);
   }
 
   public async getMenuItemFromPost(post: ImagePost): Promise<MenuItem> {
     return MenuItemLoader.createMockMenuItem(post.id);
+  }
+
+  public async getMenuItems(storeId: string): Promise<MenuItemCollection> {
+    const webMenuItems = await this.webMenuItemLoader.getItems(storeId);
+    const menuItems = MenuItemLoader.fromWebMenuItems(webMenuItems);
+    return makeCollection<MenuItemCollection>(menuItems);
   }
 
   public async getStore(StoreId: string): Promise<Store> {

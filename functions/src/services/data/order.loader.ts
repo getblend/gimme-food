@@ -1,8 +1,7 @@
 import { Inject, Service } from "typedi";
 
+import { make } from "../../helpers/make";
 import { withBoilerplate } from "../core";
-import { WebMenuOrderLoader } from "../webMenu";
-import { make, makeCollection } from "../../helpers/make";
 
 import { Order, OrderStatus, StoreHoursScope } from "../../graphql/schema";
 
@@ -12,32 +11,39 @@ import type {
   Store,
   Tracking,
   User,
+  OrderCollection,
 } from "../../graphql/schema";
 
 @Service()
 export class OrderLoader extends withBoilerplate("OrderLoader") {
   @Inject()
   // private webMenuOrderLoader: WebMenuOrderLoader;
-  public static createMockOrder(webMenuorder: string): Order {
+  public static createMockOrder(): Order {
     return make(Order, {
       id: "dsadsad",
       createdAt: new Date(),
       updatedAt: new Date(),
       cancellationReason: "",
       cancelledAt: new Date(),
-      cart: convertFromCart(),
       deliveredAt: new Date(),
       status: OrderStatus.Received,
-      store: convertFromstore(webMenuorder),
-      tracking: convertFromtTracking(),
-      transaction: covertFromTransaction(),
-      user: convertFromUser(),
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async getCart(orderId: string): Promise<Cart> {
+    throw new Error("Method not implemented.");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async getOrder(orderId: string): Promise<Order> {
     // const webMenuorder = await this.webMenuOrderLoader.getOrder(orderId);
-    return OrderLoader.createMockOrder(orderId);
+    return OrderLoader.createMockOrder();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async getOrders(userId: string): Promise<OrderCollection> {
+    throw new Error("Method not implemented.");
   }
 
   protected onInit(): void {
@@ -45,6 +51,7 @@ export class OrderLoader extends withBoilerplate("OrderLoader") {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function convertFromCart(): Cart {
   return {
     id: "122",
@@ -78,6 +85,7 @@ function convertFromCart(): Cart {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function convertFromstore(seed: string): Store {
   return {
     address: {
@@ -111,6 +119,7 @@ function convertFromstore(seed: string): Store {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function convertFromtTracking(): Tracking {
   return {
     id: "111",
@@ -126,6 +135,7 @@ function convertFromtTracking(): Tracking {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function covertFromTransaction(): RazorPayTransaction {
   return {
     id: "asdsad",

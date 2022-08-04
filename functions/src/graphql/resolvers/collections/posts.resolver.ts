@@ -16,7 +16,6 @@ export class PostsResolver extends withBoilerplate("PostsResolver") {
     nullable: true,
   })
   public post(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Arg("id", () => ID, { description: "The id of a post" }) id: string
   ): Promise<typeof PostType> {
     return this.postsLoader.getPost(id);
@@ -25,7 +24,6 @@ export class PostsResolver extends withBoilerplate("PostsResolver") {
   @Query(() => PostCollection, {
     description: "Returns a list of posts based on the given pageInfo",
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public posts(@Args() currentPage: PageInfoArgs): Promise<PostCollection> {
     return this.postsLoader.getPosts(currentPage);
   }
