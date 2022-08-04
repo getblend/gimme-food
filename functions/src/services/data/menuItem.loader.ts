@@ -1,21 +1,20 @@
 import { Inject, Service } from "typedi";
 
-import { make, makeCollection } from "../../helpers/make";
+import { DietaryPreference, MenuItem } from "../../graphql/schema";
+import { make } from "../../helpers/make";
 import { withBoilerplate } from "../core";
-import { MenuItem, DietaryPreference } from "../../graphql/schema";
 import { WebMenuItemLoader } from "../webMenu";
 
 import type {
-  Variation,
-  Tax,
   AddOn,
   MenuItemCategory,
-  MenuItemCollection,
+  Tax,
+  Variation,
 } from "../../graphql/schema";
 import type {
   WebMenuItem,
-  WebMenuItemTax,
   WebMenuItemCategory,
+  WebMenuItemTax,
 } from "../webMenu";
 
 @Service()
@@ -67,15 +66,13 @@ export class MenuItemLoader extends withBoilerplate("MenuItemLoader") {
     };
   }
 
+  public static fromWebMenuItems(webMenuItems: WebMenuItem[]): MenuItem[] {
+    return webMenuItems.map(MenuItemLoader.fromWebMenuItem);
+  }
+
   public async getMenuItem(menuItemId: string): Promise<MenuItem> {
     const webMenuItem = await this.webMenuItemLoader.getItem(menuItemId);
     return MenuItemLoader.fromWebMenuItem(webMenuItem);
-  }
-
-  public async getMenuItems(storeId: string): Promise<MenuItemCollection> {
-    const webMenuItems = await this.webMenuItemLoader.getItem(storeId);
-    const menuItems = [MenuItemLoader.fromWebMenuItem(webMenuItems)];
-    return makeCollection<MenuItemCollection>(menuItems);
   }
 
   public async loadCategory(menuItemId: string): Promise<MenuItemCategory> {

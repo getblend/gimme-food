@@ -16,7 +16,6 @@ export class StoresResolver extends withBoilerplate("StoresResolver") {
     nullable: true,
   })
   public store(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Arg("id", () => ID, { description: "The id of a store" }) id: string
   ): Promise<Store> {
     return this.storeLoader.getStore(id);

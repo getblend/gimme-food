@@ -86,6 +86,21 @@ export class WebMenuItemLoader extends withBoilerplate("WebMenuItemLoader") {
     }
   }
 
+  public async getItems(storeid: string): Promise<WebMenuItem[]> {
+    try {
+      const { data } = await this.webMenuApi.get<WebMenuItem[]>(
+        `/menuitems/${storeid}`
+      );
+      return data;
+    } catch (error) {
+      this.logger.error(
+        `Error while fetching item:${storeid} from web menu api`,
+        error
+      );
+      throw new Error(`Error while fetching item:${storeid} from web menu api`);
+    }
+  }
+
   protected onInit(): void {
     return;
   }

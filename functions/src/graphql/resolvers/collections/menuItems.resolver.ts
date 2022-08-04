@@ -16,7 +16,6 @@ export class MenuItemsResolver extends withBoilerplate("MenuItemsResolver") {
     nullable: true,
   })
   public menuItem(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Arg("id", () => ID, { description: "The id of menuitem" }) id: string
   ): Promise<MenuItem> {
     return this.menuItemLoader.getMenuItem(id);

@@ -3,14 +3,15 @@ import { Inject, Service } from "typedi";
 import { Store, StoreHoursScope } from "../../graphql/schema";
 import { make, makeCollection } from "../../helpers/make";
 import { withBoilerplate } from "../core";
+import { WebMenuItemLoader, WebMenuStoreLoader } from "../webMenu";
 import { MenuItemLoader } from "./menuItem.loader";
-import { WebMenuStoreLoader } from "../webMenu";
 
 import type {
   ImagePost,
   MenuItem,
-  StoreHours,
   StoreCollection,
+  StoreHours,
+  MenuItemCollection,
   Address,
 } from "../../graphql/schema";
 
@@ -18,6 +19,9 @@ import type { WebMenuStore } from "../webMenu";
 
 @Service()
 export class StoreLoader extends withBoilerplate("StoreLoader") {
+  @Inject()
+  private webMenuItemLoader: WebMenuItemLoader;
+
   @Inject()
   private webMenuStoreLoader: WebMenuStoreLoader;
 
@@ -54,18 +58,17 @@ export class StoreLoader extends withBoilerplate("StoreLoader") {
   }
 
   public static fromWebMenuStores(stores: WebMenuStore[]): Store[] {
-    return stores.map((store) => ({
-      address: createAddress(store.address),
-      createdAt: new Date(),
-      hours: convertFromWebMenuHours(store.openclosetime),
-      id: store.userid,
-      name: store.username,
-      updatedAt: new Date(),
-    }));
+    return stores.map(StoreLoader.fromWebMenuStore);
   }
 
   public async getMenuItemFromPost(post: ImagePost): Promise<MenuItem> {
     return MenuItemLoader.createMockMenuItem(post.id);
+  }
+
+  public async getMenuItems(storeId: string): Promise<MenuItemCollection> {
+    const webMenuItems = await this.webMenuItemLoader.getItems(storeId);
+    const menuItems = MenuItemLoader.fromWebMenuItems(webMenuItems);
+    return makeCollection<MenuItemCollection>(menuItems);
   }
 
   public async getStore(StoreId: string): Promise<Store> {
