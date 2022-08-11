@@ -3184,9 +3184,9 @@ tr46@~0.0.3:
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
 ts-deepmerge@^2.0.1:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/ts-deepmerge/-/ts-deepmerge-2.0.4.tgz#294d08c0b6957cb15f3eac2dfa020611e0db8cf1"
-  integrity sha512-+xUYN/yYCwAtK7NtE0M1w5U1TlJg8ODoepMttmfsuRSo/Pz49bv7ZCILkCiBEpGBOIRrFMynnIhrY42U57Rl1g==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/ts-deepmerge/-/ts-deepmerge-2.0.5.tgz#7b8a9dcab5714cc7b91e307c4bbcf42d99dbc6c0"
+  integrity sha512-1CGOREP8pYWk3Iu1O0ANSVjS6IVYh8Hq6LmHLpKfuUW0P5Xbdh4nqiWrVkGkXKLidnLYV3p6RCYtypBYN2my9A==
 
 tsconfig-paths@^3.14.1:
   version "3.14.1"
